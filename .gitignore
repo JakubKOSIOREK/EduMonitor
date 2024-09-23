@@ -60,3 +60,4 @@ migrations/
 # Inne pliki i katalogi
 *.pdf
 output/
+!edumonitor_timestamp.log
