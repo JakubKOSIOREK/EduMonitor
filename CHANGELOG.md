@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [1.1.0] - 2024-09-23
+### Dodano:
+- **Generowanie list HTML**: Program umożliwia generowanie list pracowników do przeszkolenia w formacie HTML, podzielonych na grupy zawodowe. Funkcja jest dostępna pod flagą `--lists-html`.
+
 ## [1.0.0] - 2024-09-23
 ### Dodano
 - **Obsługa plików CSV**: Program wczytuje pliki CSV zawierające informacje o pracownikach i ich szkoleniach. Obsługiwane są pliki w formacie `cp1250`, a dane są przetwarzane na obiekty klasy `Employee`.
