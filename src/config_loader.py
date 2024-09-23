@@ -81,3 +81,20 @@ def get_ssl_verification_setting(config_file='config/config.ini'):
         return verify_ssl
     except KeyError:
         return True  # Domyślnie weryfikacja SSL jest włączona
+
+def get_output_lists_dir(config_file='config/config.ini'):
+    """
+    Pobiera ścieżkę do katalogu na listy HTML z pliku konfiguracyjnego.
+    
+    Args:
+        config_file (str): Ścieżka do pliku konfiguracyjnego.
+    
+    Returns:
+        str: Ścieżka do katalogu na pliki HTML.
+    """
+    config = load_config(config_file)
+    try:
+        lists_dir = config['OUTPUT']['LISTS_DIR']
+        return lists_dir
+    except KeyError:
+        return 'output/lists/'  # Domyślna wartość, jeśli brak w pliku config.ini

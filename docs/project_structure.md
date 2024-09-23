@@ -18,6 +18,8 @@ edumonitor/
 |   ├── employee_class.py       # Klasa Employee i metody do zarządzania pracownikami
 |   ├── logger_setup.py         # Konfiguracja loggera
 |   └── table_display.py        # Generowanie i wyświetlanie tabel na konsoli
+├── templates/
+│   └── employee_list_template.html
 ├── tests/
 │   ├── test_check_employee_in_db.py
 │   ├── test_filter_file.py
