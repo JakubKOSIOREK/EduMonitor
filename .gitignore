@@ -59,3 +59,4 @@ migrations/
 
 # Inne pliki i katalogi
 *.pdf
+output/
