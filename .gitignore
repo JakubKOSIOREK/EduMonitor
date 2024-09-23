@@ -56,3 +56,6 @@ migrations/
 
 # Ignorowanie plików cache
 *.cache
+
+# Inne pliki i katalogi
+*.pdf
