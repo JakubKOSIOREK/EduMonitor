@@ -60,3 +60,5 @@ migrations/
 # Inne pliki i katalogi
 *.pdf
 output/
+!edumonitor_2024-09-23_14-15-04.log
+!output/lists/example_pracownicy_lista_na_szkolenie.html
