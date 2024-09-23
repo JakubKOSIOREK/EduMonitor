@@ -126,7 +126,7 @@
         {% for employee in employees %}
         <tr>
             <td>{{ loop.index }}</td>
-            <td>{{ employee.imie }} {{ employee.nazwisko }}</td>
+            <td>{{ employee.nazwisko }} {{ employee.imie }}</td>
             <td>{{ employee.jednostka }}</td>
             <td class="signature"></td>
         </tr>
