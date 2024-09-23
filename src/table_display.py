@@ -1,7 +1,11 @@
 """ src/table_display.py """
 
+import locale
 from prettytable import PrettyTable
 from src.logger_setup import setup_logger
+
+# Ustawiamy lokalizację na polską
+locale.setlocale(locale.LC_COLLATE, 'pl_PL.UTF-8')
 
 # Inicjalizacja loggera
 logger = setup_logger()
@@ -9,20 +13,23 @@ logger = setup_logger()
 def display_employees_table(employees, group_name, table_title):
     """
     Wyświetla tabelę pracowników w konsoli przy użyciu PrettyTable.
-    
-    Args:
-        employees (list): Lista pracowników do wyświetlenia.
-        group_name (str): Nazwa grupy zawodowej.
-        table_title (str): Tytuł tabeli wyświetlany nad tabelą.
     """
     if not employees:
         return  # Jeśli lista pracowników jest pusta, nie wyświetlaj tabeli.
 
-    print(f"\n{group_name} - {table_title}")  # Wyświetlanie tytułu tabeli
+    # Sortowanie po nazwisku z użyciem locale.strxfrm(), aby obsłużyć polskie znaki
+    employees = sorted(employees, key=lambda emp: locale.strxfrm(emp.nazwisko))
+
+    print(f"\n{group_name} - {table_title} (Liczba pracowników: {len(employees)})")
 
     table = PrettyTable()
-    table.field_names = ["Nazwisko", "Imię", "Jednostka", "Nazwa szkolenia", "Data szkolenia", "Ważne do", "Z bazy URL", "Stanowisko", "Email"]
-    
+    table.field_names = ["Nazwisko", "Imię", "Dział", "Nazwa szkolenia", "Data szkolenia", "Ważne do"]
+
+    table.align = "l"  # Domyślne wyrównanie dla wszystkich kolumn - do lewej
+    table.align["Dział"] = "c"  # Specyficzne wyśrodkowanie dla kolumny 'Dział'
+    table.border = True  # Dodanie obramowania
+    table.padding_width = 1  # Zmniejszenie szerokości paddingu w komórkach
+
     for employee in employees:
         table.add_row([
             employee.nazwisko, 
@@ -30,14 +37,11 @@ def display_employees_table(employees, group_name, table_title):
             employee.jednostka, 
             employee.nazwa_szkolenia, 
             employee.data_szkolenia.strftime("%d.%m.%Y"),   # Konwersja na string
-            employee.wazne_do.strftime("%d.%m.%Y"),         # Konwersja na string
-            employee.db_url,                                # True/False, czy pracownik istnieje w bazie URL
-            employee.stanowisko,                            # Dodajemy stanowisko
-            employee.email                                  # Dodajemy email
+            employee.wazne_do.strftime("%d.%m.%Y")          # Konwersja na string
         ])
-    
+
     print(table)
-    logger.info(f"Dane pracowników z grupy '{group_name} - {table_title}' zostały wyświetlone.")
+    logger.info(f"Wyświetlono {len(employees)} pracowników dla grupy '{group_name} - {table_title}'")
 
 
 def display_group_tables(group, group_name):

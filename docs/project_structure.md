@@ -18,10 +18,14 @@ edumonitor/
 |   ├── employee_class.py       # Klasa Employee i metody do zarządzania pracownikami
 |   ├── logger_setup.py         # Konfiguracja loggera
 |   └── table_display.py        # Generowanie i wyświetlanie tabel na konsoli
+├── templates/
+│   └── employee_list_template.html
 ├── tests/
-│   ├── test_csv_loader.py        # Testy dla csv_loader
-│   ├── test_employee_checker.py  # Testy dla employee_checker
-│   └── test_db_fetcher.py        # Testy dla db_fetcher
+│   ├── test_check_employee_in_db.py
+│   ├── test_filter_file.py
+│   ├── test_is_expired.py
+│   ├── test_is_soon_expiring.py
+│   └── test_load_file.py
 ├── tmp/
 ├── edumonitor.py
 ├── CHANGELOG.md

@@ -7,6 +7,7 @@ from src.db_fetcher import fetch_employee_data_from_url
 from src.config_loader import get_database_url
 from src.logger_setup import setup_logger
 from src.table_display import display_all_groups
+from src.html_generator import generate_html_file
 
 # Inicjalizacja loggera
 logger = setup_logger()
@@ -16,7 +17,8 @@ def main():
     
     parser = argparse.ArgumentParser(description='EduMonitor - wczytaj plik CSV i wyświetl dane.')
     parser.add_argument('--csv', type=str, help='Ścieżka do pliku CSV')
-    parser.add_argument('--shell', action='store_true', help='Wyświetlenie wyników w konsoli (tabele)')  # Flaga do wyświetlania wyników w konsoli
+    parser.add_argument('--shell', action='store_true', help='Wyświetlenie wyników w konsoli (tabele)')
+    parser.add_argument('--lists-html', action='store_true', help='Generowanie list pracowników w formacie HTML')
     args = parser.parse_args()
 
     if not args.csv:
@@ -43,6 +45,11 @@ def main():
     # Wyświetlanie wyników na konsoli tylko, jeśli podano flagę --shell
     if args.shell:
         display_all_groups(kadra_zarzadcza, kadra_kierownicza, pracownicy)
+
+    if args.lists_html:
+        generate_html_file("Kadra Zarządzająca", kadra_zarzadcza, 'config/config.ini')
+        generate_html_file("Kadra Kierownicza", kadra_kierownicza, 'config/config.ini')
+        generate_html_file("Pracownicy", pracownicy, 'config/config.ini')
 
     logger.info("Program EduMonitor został zakończony.")
 

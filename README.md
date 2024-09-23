@@ -1,7 +1,7 @@
 # EduMonitor - Monitorowanie szkoleń pracowników
 
 ## Opis projektu
-EduMonitor to narzędzie do monitorowania szkoleń pracowników, które umożliwia przetwarzanie danych z plików CSV, porównywanie ich z danymi pobranymi z zewnętrznego URL oraz wyświetlanie wyników w konsoli w formie tabel.
+EduMonitor to narzędzie do monitorowania szkoleń pracowników, które umożliwia przetwarzanie danych z plików CSV, porównywanie ich z danymi pobranymi z zewnętrznego URL oraz wyświetlanie wyników w konsoli w formie tabel. Dodatkowo, program może generować listy pracowników do przeszkolenia w formacie HTML, obejmujące pracowników, którym kończy się szkolenie lub których szkolenie już wygasło.
 
 ## Wymagania
 - Python 3.10 lub nowszy
@@ -19,12 +19,15 @@ EduMonitor to narzędzie do monitorowania szkoleń pracowników, które umożliw
 Program można uruchomić, używając flagi `--csv` . Aby wyniki były wyświetlane w konsoli w formie tabeli, należy dodatkowo użyć flagi `--shell`:
    ```python
    python3 edumonitor.py --csv <ścieżka do pliku CSV> --shell
+   python3 edumonitor.py --csv <ścieżka do pliku CSV> --lists-html
+   python3 edumonitor.py --csv <ścieżka do pliku CSV> --lists-html --shell
    ```
 Po wczytaniu pliku CSV (w formacie `cp1250`), program przetwarza dane pracowników, porównuje je z danymi pobranymi z URL (zdefiniowanego w pliku konfiguracyjnym `config/config.ini`) i wyświetla wyniki na konsoli w formie tabeli, jeśli podano flagę `--shell`.
 
 ## Flagi i opcje
 - `--csv <ścieżka do pliku>`: Wczytuje dane z pliku CSV i wyświetla je po przetworzeniu oraz porównaniu z danymi z bazy URL.
 - `--shell`: Wyświetla dane w konsoli w formie tabeli.
+- `--lists-html`: Generuje listy pracowników do przeszkolenia w formacie HTML. Tworzy pliki HTML z pracownikami, którym kończy się szkolenie lub których szkolenie się skończyło, w katalogu `output/lists/`.
 - `-h / --help`: Wyświetla pomoc dotyczącą dostępnych opcji.
 
 ## Funkcjonalności
@@ -32,6 +35,7 @@ Po wczytaniu pliku CSV (w formacie `cp1250`), program przetwarza dane pracownik�
 - **Porównanie z bazą URL**: Program pobiera dane o pracownikach z zewnętrznego URL, porównuje je z danymi z CSV, dodając informacje o stanowisku i email pracownika, jeśli istnieją w bazie danych.
 - **Filtrowanie dat szkolenia**: Program automatycznie rozpoznaje daty w formacie dd.mm.rrrr...dd.mm.rrrr i klasyfikuje pracowników na podstawie daty ważności szkolenia (ważne, zbliżające się do końca, po terminie).
 - **Generowanie tabel**: Program generuje tabele z podziałem na grupy zawodowe (kadra zarządzająca, kadra kierownicza, pracownicy) oraz wyświetla pracowników z aktualnym, wygasającym i już wygasłym szkoleniem.
+- **Generowanie list HTML**: Program generuje listy HTML z pracownikami, którym kończy się szkolenie lub których szkolenie już wygasło. Listy są zapisywane w katalogu `output/lists/` i podzielone na grupy zawodowe.
 - **Wyświetlanie wyników**: Program wyświetla dane w formie tabeli w konsoli (przy użyciu flagi `--shell`), pokazując m.in. informacje o tym, czy pracownik istnieje w bazie URL (`db_url = True`).
 
 ## Przykład działania
@@ -66,6 +70,10 @@ DATE_FORMAT = %d.%m.%Y
 # Możliwe wartości: DEBUG, INFO, WARNING, ERROR, CRITICAL
 LOG_LEVEL_CONSOLE = WARNING
 LOG_LEVEL_FILE = INFO
+#
+#
+[OUTPUT]
+LISTS_DIR = output/lists/
 #
 [DATABASE]
 # URL do pobierania danych o pracownikach
