@@ -1,0 +1,58 @@
+# Ignorowanie plików z wirtualnych środowisk Python
+venv/
+env/
+
+# Ignorowanie plików systemowych
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.pyo
+
+# Ignorowanie logów i plików tymczasowych
+*.log
+*.pot
+*.mo
+*.pid
+*.swp
+*.swo
+
+# Ignorowanie plików tymczasowych stworzonych przez edytory i systemy operacyjne
+*.DS_Store
+Thumbs.db
+*.bak
+*.tmp
+*.~*
+
+# Ignorowanie plików konfiguracji i buildów
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Ignorowanie plików konfiguracyjnych IDE
+.vscode/
+.idea/
+
+# Ignorowanie plików bazy danych
+db.sqlite3
+
+# Ignorowanie plików konfiguracyjnych systemów kontroli wersji (jeśli istnieją)
+.svn/
+*.svn
+.svnignore
+
+# Ignorowanie wrażliwych plików konfiguracyjnych
+config/*.ini
+config/*.env
+# Z wyjątkiem pliku config_example.ini
+!config/config_example.ini
+
+# Ignorowanie plików statycznych (w zależności od używanych narzędzi)
+staticfiles/
+media/
+
+# Ignorowanie migracji bazy danych, które mogą być regenerowane
+migrations/
+
+# Ignorowanie plików cache
+*.cache
