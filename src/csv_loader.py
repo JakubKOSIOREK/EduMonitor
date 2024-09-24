@@ -21,9 +21,9 @@ class CSVLoader:
         logger.info(f"Rozpoczęto strumieniowe wczytywanie pliku CSV: {csv_file}")
         try:
             with open(csv_file, mode='r', encoding='cp1250') as file:
-                reader = csv.reader(file, delimiter=';')
-                for row in reader:
-                    yield row
+                for row in csv.reader(file, delimiter=';'):
+                    if len(row) > 1 and row[0].isdigit():  # Sprawdzamy, czy wiersz zaczyna się od numeru wiersza
+                        yield row
         except FileNotFoundError:
             logger.error(f"Plik {csv_file} nie został znaleziony.")  # Ten logger musi być wywoływany
         except Exception as e:
