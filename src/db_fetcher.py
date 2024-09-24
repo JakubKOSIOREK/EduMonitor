@@ -63,5 +63,4 @@ def fetch_employee_data_from_url(url):
         logger.error(f"Nieoczekiwany błąd: {e}")
         return []
 
-    # Zwracamy pustą listę w przypadku błędu
-    #return []
+    return []
