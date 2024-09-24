@@ -7,7 +7,7 @@ from src.db_fetcher import fetch_employee_data_from_url
 from src.config_loader import get_database_url
 from src.logger_setup import setup_logger
 from src.table_display import display_all_groups
-from src.html_generator import generate_html_file
+from src.html_generator import generate_html_file, generate_training_report_html
 
 # Inicjalizacja loggera
 logger = setup_logger()
@@ -19,6 +19,7 @@ def main():
     parser.add_argument('--csv', type=str, help='Ścieżka do pliku CSV')
     parser.add_argument('--shell', action='store_true', help='Wyświetlenie wyników w konsoli (tabele)')
     parser.add_argument('--lists-html', action='store_true', help='Generowanie list pracowników w formacie HTML')
+    parser.add_argument('--report-html', action='store_true', help='Generowanie raportu o stanie wyszkolenia w formacie HTML')
     args = parser.parse_args()
 
     if not args.csv:
@@ -50,6 +51,9 @@ def main():
         generate_html_file("Kadra Zarządzająca", kadra_zarzadcza, 'config/config.ini')
         generate_html_file("Kadra Kierownicza", kadra_kierownicza, 'config/config.ini')
         generate_html_file("Pracownicy", pracownicy, 'config/config.ini')
+
+    if args.report_html:
+        generate_training_report_html(employees_csv, 'config/config.ini')
 
     logger.info("Program EduMonitor został zakończony.")
 

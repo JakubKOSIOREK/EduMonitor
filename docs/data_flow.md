@@ -28,7 +28,12 @@
         - `db_url` - wartość `True`, jeśli użytkownik istnieje w bazie danych z URL.
         - `stanowisko` i `email` - pobrane z bazy danych z URL, jeśli są dostępne, lub pozostają puste.
 
-5. **Generowanie tabel i wyświetlanie wyników:**
+5. **Generowanie raportów HTML**:
+   - Program umożliwia generowanie raportu o stanie wyszkolenia pracowników w formacie HTML. Raport zawiera liczbę pracowników z ważnymi, wygasającymi oraz przeterminowanymi szkoleniami.
+   - Raport jest generowany na podstawie danych z pliku CSV i zewnętrznego URL, a jego nazwa zawiera timestamp.
+   - Aktualna data pojawia się w raporcie w formacie `Gdynia dnia <aktualna data>`.
+
+6. **Generowanie tabel i wyświetlanie wyników:**
     - Zaktualizowane dane pracowników są przetwarzane w module `table_data.py`, który generuje tabele dla grup zawodowych (kadra zarządzająca, kadra kierownicza, pracownicy).
     - Każda grupa jest podzielona na pracowników z aktualnym szkoleniem oraz tych, których szkolenie wygaśnie w ciągu 30 dni lub już wygasło.
     - Tabele są wyświetlane na konsoli za pomocą modułu `table_display.py`, ale tylko w przypadku podania flagi `--shell`.

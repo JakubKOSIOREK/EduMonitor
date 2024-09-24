@@ -20,6 +20,7 @@ edumonitor/
 |   └── table_display.py        # Generowanie i wyświetlanie tabel na konsoli
 ├── templates/
 │   └── employee_list_template.html
+│   └── employee_report_template.html
 ├── tests/
 │   ├── test_check_employee_in_db.py
 │   ├── test_filter_file.py

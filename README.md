@@ -21,6 +21,7 @@ Program można uruchomić, używając flagi `--csv` . Aby wyniki były wyświetl
    python3 edumonitor.py --csv <ścieżka do pliku CSV> --shell
    python3 edumonitor.py --csv <ścieżka do pliku CSV> --lists-html
    python3 edumonitor.py --csv <ścieżka do pliku CSV> --lists-html --shell
+   python3 edumonitor.py --csv <ścieżka do pliku CSV> --report-html
    ```
 Po wczytaniu pliku CSV (w formacie `cp1250`), program przetwarza dane pracowników, porównuje je z danymi pobranymi z URL (zdefiniowanego w pliku konfiguracyjnym `config/config.ini`) i wyświetla wyniki na konsoli w formie tabeli, jeśli podano flagę `--shell`.
 
@@ -36,6 +37,7 @@ Po wczytaniu pliku CSV (w formacie `cp1250`), program przetwarza dane pracownik�
 - **Filtrowanie dat szkolenia**: Program automatycznie rozpoznaje daty w formacie dd.mm.rrrr...dd.mm.rrrr i klasyfikuje pracowników na podstawie daty ważności szkolenia (ważne, zbliżające się do końca, po terminie).
 - **Generowanie tabel**: Program generuje tabele z podziałem na grupy zawodowe (kadra zarządzająca, kadra kierownicza, pracownicy) oraz wyświetla pracowników z aktualnym, wygasającym i już wygasłym szkoleniem.
 - **Generowanie list HTML**: Program generuje listy HTML z pracownikami, którym kończy się szkolenie lub których szkolenie już wygasło. Listy są zapisywane w katalogu `output/lists/` i podzielone na grupy zawodowe.
+- **Generowanie raportów HTML**: Program umożliwia generowanie raportów o stanie wyszkolenia pracowników w formacie HTML, podzielonych na grupy zawodowe. Raport zawiera liczbę pracowników z ważnymi, wygasającymi oraz przeterminowanymi szkoleniami. Raport jest generowany z timestampem w nazwie pliku i jest dostępny pod flagą `--report-html`.
 - **Wyświetlanie wyników**: Program wyświetla dane w formie tabeli w konsoli (przy użyciu flagi `--shell`), pokazując m.in. informacje o tym, czy pracownik istnieje w bazie URL (`db_url = True`).
 
 ## Przykład działania
