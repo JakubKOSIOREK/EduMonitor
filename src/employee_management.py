@@ -24,10 +24,27 @@ class EmployeeManager:
                 employee.db_url = False
             return self.employees_csv
 
-        db_employee_data = {(emp['nazwisko'].lower(), emp['imie'].lower()): emp for emp in self.employees_db}
+        db_employee_data = {(emp['nazwisko'].strip().lower(), emp['imie'].strip().lower()): emp for emp in self.employees_db}
+
+        for employee in self.employees_csv:
+            # Usuwanie spacji przed porównaniem nazwiska i imienia
+            db_employee = db_employee_data.get((employee.nazwisko.strip().lower(), employee.imie.strip().lower()))
+            if db_employee:
+                employee.db_url = True
+                employee.stanowisko = db_employee.get('stanowisko', '')
+                employee.email = db_employee.get('email', '')
+            else:
+                employee.db_url = False
     
         for employee in self.employees_csv:
-            # Sprawdzanie poprawności daty ważności szkolenia
+            # Sprawdzanie poprawności formatu daty ważności szkolenia
+            if isinstance(employee.wazne_do, str):
+                try:
+                    employee.wazne_do = datetime.strptime(employee.wazne_do, "%d.%m.%Y")
+                except ValueError:
+                    logger.error(f"Błędny format daty dla pracownika: {employee.nazwisko}")
+                    continue
+
             if not validate_date_format(employee.wazne_do.strftime("%d.%m.%Y")):
                 logger.error(f"Błędny format daty dla pracownika: {employee.nazwisko}")
                 continue
@@ -53,7 +70,8 @@ class EmployeeManager:
         Filtruje pracowników według stanowiska.
         """
         if management_keywords is None:
-            management_keywords = ["dyrektor"]
+            management_keywords = ["kadra zarządzająca"]
+
         if leadership_keywords is None:
             leadership_keywords = ["kierownik"]
 
