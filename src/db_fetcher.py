@@ -2,12 +2,12 @@
 
 import urllib3
 import json
+from src.config_loader import ConfigLoader
 from src.logger_setup import setup_logger
-from src.config_loader import get_ssl_verification_setting
-
-# Inicjalizacja loggera
+from src.utility.logging_decorator import log_exceptions
 logger = setup_logger()
 
+@log_exceptions(logger)
 def fetch_employee_data_from_url(url):
     """
     Pobiera dane o pracownikach z zewnętrznego URL.
@@ -19,7 +19,8 @@ def fetch_employee_data_from_url(url):
         list: Lista pracowników pobrana z zewnętrznego API.
     """
     # Pobieramy ustawienie weryfikacji SSL z pliku konfiguracyjnego
-    verify_ssl = get_ssl_verification_setting()
+    config_loader = ConfigLoader()
+    verify_ssl = config_loader.get_ssl_verification_setting()
     timeout = 10  # 10 sekund na odpowiedź z serwera
 
     # Konfiguracja PoolManager z opcją weryfikacji SSL
