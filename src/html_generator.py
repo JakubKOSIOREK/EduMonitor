@@ -1,91 +1,76 @@
 """ src/html_generator.py """
 
 import os
-import locale
 from jinja2 import Template
-from src.logger_setup import setup_logger
-from src.config_loader import get_output_lists_dir
+from src.config_loader import ConfigLoader
 from datetime import datetime
-
-# Ustawiamy lokalizację na polską
-locale.setlocale(locale.LC_COLLATE, 'pl_PL.UTF-8')
-
+from src.utility.formatting import format_date
+from src.logger_setup import setup_logger
+from src.utility.logging_decorator import log_exceptions
 logger = setup_logger()
-employee_list_template = "templates/employee_list_template.html"
-company_report_template = "templates/employee_report_template.html"
 
-def load_template(template_path):
-    """
-    Wczytuje szablon HTML z pliku.
-    
-    Args:
-        template_path (str): Ścieżka do pliku szablonu.
-    
-    Returns:
-        Template: Obiekt Jinja2 Template.
-    """
-    try:
-        with open(template_path, 'r', encoding='utf-8') as file:
-            template_content = file.read()
-        return Template(template_content)
-    except FileNotFoundError:
-        logger.error(f"Plik szablonu {template_path} nie został znaleziony.")
-        return None
+class HTMLReportGenerator:
+    def __init__(self, config_file='config/config.ini'):
+        self.config_loader = ConfigLoader(config_file)
+        self.output_dir = self.config_loader.get_output_lists_dir()
+        self.templates_dir = 'templates'
+        self.employee_list_template = self.load_template('employee_list_template.html')
+        self.company_report_template = self.load_template('employee_report_template.html')
 
-def generate_html_file(group_name, employees, config_file='config/config.ini'):
-    output_dir = get_output_lists_dir(config_file)
-    logger.info(f"Ścieżka katalogu wyjściowego: {output_dir}")
-    
-    if not employees:
-        logger.info(f"Lista pracowników dla grupy '{group_name}' jest pusta. Nie generuję pliku HTML.")
-        return
+    def load_template(self, template_name):
+        """Ładuje szablon HTML."""
+        template_path = os.path.join(self.templates_dir, template_name)
+        try:
+            with open(template_path, 'r', encoding='utf-8') as file:
+                template_content = file.read()
+            return Template(template_content)
+        except FileNotFoundError:
+            logger.error(f"Plik szablonu {template_path} nie został znaleziony.")
+            return None
 
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-        logger.info(f"Utworzono katalog: {output_dir}")
+    @log_exceptions(logger)
+    def generate_employee_list(self, group_name, employees):
+        """Generuje listę pracowników w formacie HTML."""
+        if not employees:
+            logger.info(f"Brak pracowników w grupie '{group_name}'.")
+            return
 
-    file_name = f"{group_name.lower().replace(' ', '_')}_lista_na_szkolenie.html"
-    file_path = os.path.join(output_dir, file_name)
+        if not self.employee_list_template:
+            logger.error("Szablon listy pracowników nie został poprawnie załadowany.")
+            return
 
-    template = load_template(employee_list_template)
-    if template is None:
-        logger.error(f"Nie załadowano szablonu z {employee_list_template}.")
-        return  # Nie generujemy pliku, jeśli nie załadowano szablonu
-    
-    html_content = template.render(group_name=group_name, employees=employees)
+        file_name = f"{group_name.lower().replace(' ', '_')}_lista.html"
+        file_path = os.path.join(self.output_dir, file_name)
+        html_content = self.employee_list_template.render(group_name=group_name, employees=employees)
 
-    with open(file_path, 'w', encoding='utf-8') as f:
-        f.write(html_content)
-        logger.info(f"Utworzono plik HTML: '{file_path}'")
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(html_content)
+        logger.info(f"Lista pracowników '{group_name}' zapisana w {file_path}")
 
-def generate_training_report_html(employees, config_file):
-    # Przykładowy kod do tworzenia raportu o stanie wyszkolenia
-    output_dir = get_output_lists_dir(config_file)
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
+    def _get_training_summary(self, employees):
+        """Zwraca podsumowanie liczby pracowników z różnym statusem szkoleń."""
+        valid_training = [emp for emp in employees if emp.is_valid_training]
+        soon_expiring = [emp for emp in employees if emp.is_soon_expiring]
+        expired = [emp for emp in employees if emp.is_expired]
+        return valid_training, soon_expiring, expired
 
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    file_name = f"raport_stanu_wyszkolenia_{timestamp}.html"
-    file_path = os.path.join(output_dir, file_name)
+    @log_exceptions(logger)
+    def generate_training_report(self, employees):
+        """Generuje raport HTML o stanie szkoleń."""
+        valid_training, soon_expiring, expired = self._get_training_summary(employees)
 
-    # Przykładowa struktura raportu
-    valid_training = [emp for emp in employees if emp.is_valid_training()]
-    soon_expiring = [emp for emp in employees if emp.is_soon_expiring()]
-    expired = [emp for emp in employees if emp.is_expired()]
+        current_date = format_date(datetime.now(), "%d.%m.%Y")
 
-    # Wczytanie szablonu
-    template = load_template(company_report_template)
-    if not template:
-        return
+        file_name = f"raport_wyszkolenia_{datetime.now().strftime('%Y-%m-%d')}.html"
+        file_path = os.path.join(self.output_dir, file_name)
+        html_content = self.company_report_template.render(
+            valid_training=len(valid_training),
+            soon_expiring=len(soon_expiring),
+            expired=len(expired),
+            employees=employees,
+            current_date=current_date
+        )
 
-    html_content = template.render(
-        valid_training=len(valid_training),
-        soon_expiring=len(soon_expiring),
-        expired=len(expired),
-        employees=employees,
-        current_date=datetime.now().strftime("%d.%m.%Y")
-    )
-
-    with open(file_path, 'w', encoding='utf-8') as f:
-        f.write(html_content)
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(html_content)
         logger.info(f"Raport HTML wygenerowany: {file_path}")

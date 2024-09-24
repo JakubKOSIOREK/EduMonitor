@@ -12,21 +12,22 @@ edumonitor/
 |   └── project_structure.pdf
 ├── logs/
 ├── src/
-|   ├── config_loader.py        # Funkcje ładowania konfiguracji
-|   ├── csv_loader.py           # Funkcje wczytywania i filtrowania plików CSV
-|   ├── db_fetcher.py           # Pobieranie danych o pracownikach z URL
-|   ├── employee_class.py       # Klasa Employee i metody do zarządzania pracownikami
-|   ├── logger_setup.py         # Konfiguracja loggera
-|   └── table_display.py        # Generowanie i wyświetlanie tabel na konsoli
+|   ├── utility/
+|   |   ├── exceptioon_handling.py
+|   |   ├── formatting.py
+|   |   ├── logging_decorator.py
+|   |   └── validation.py
+|   ├── config_loader.py
+|   ├── csv_loader.py
+|   ├── db_fetcher.py
+|   ├── employee_management.py
+|   ├── employee.py
+|   ├── logger_setup.py
+|   └── table_display.py
 ├── templates/
 │   └── employee_list_template.html
 │   └── employee_report_template.html
 ├── tests/
-│   ├── test_check_employee_in_db.py
-│   ├── test_filter_file.py
-│   ├── test_is_expired.py
-│   ├── test_is_soon_expiring.py
-│   └── test_load_file.py
 ├── tmp/
 ├── edumonitor.py
 ├── CHANGELOG.md

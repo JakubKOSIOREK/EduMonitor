@@ -83,7 +83,7 @@ URL = https://example.com/data
 #
 VERIFY_SSL = True
 ```
-
+<!--
 ## Testowanie
 Projekt zawiera testy jednostkowe, które sprawdzają poprawność wczytywania danych z plików CSV oraz JSON, a także funkcji porównujących dane pracowników. Aby uruchomić testy, użyj następującego polecenia:
 
@@ -97,6 +97,8 @@ python3 -m unittest discover -s tests
 - Porównanie danych z pliku CSV z bazą danych z URL (`check_employee_in_db()`).
 - Wczytywanie danych z plików JSON (`fetch_employee_data_from_file()`).
 - Sprawdzanie statusu ważności szkoleń (`is_expired()`, `is_soon_expiring()`).
+-->
+
 
 ## Logowanie
 Poziom logowania można ustawić na dwa sposoby:

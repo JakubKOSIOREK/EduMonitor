@@ -1,49 +1,71 @@
 """ src/logger_setup.py """
 
 import logging
-import os
+import configparser
+from logging.handlers import RotatingFileHandler
 from datetime import datetime
-from src.config_loader import get_log_file, get_log_level_console, get_log_level_file
+import os
 
-def setup_logger(config_file='config/config.ini'):
+logger = None
+
+def setup_logger(config_file='config/config.ini', section='DEFAULT'):
     logger = logging.getLogger('EduMonitor')
 
-    # Sprawdzenie, czy logger nie ma już dodanych handlerów
-    if not logger.hasHandlers():
-        # Pobranie ścieżki do pliku logów z pliku konfiguracyjnego
-        log_file = get_log_file(config_file)
-        
-        # Dodanie timestamp do nazwy pliku
-        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        log_file_with_timestamp = f"{os.path.splitext(log_file)[0]}_{timestamp}.log"
+    if logger.hasHandlers():
+        return logger
 
-        # Tworzenie katalogu na logi, jeśli nie istnieje
-        log_dir = os.path.dirname(log_file_with_timestamp)
-        if not os.path.exists(log_dir):
-            os.makedirs(log_dir)
+    # Wczytanie konfiguracji
+    config = configparser.ConfigParser(interpolation=None)
+    config.read(config_file)
 
-        # Pobranie poziomów logowania dla konsoli i pliku
-        log_level_console = get_log_level_console(config_file)
-        log_level_file = get_log_level_file(config_file)
+    # Pobranie sekcji (DEFAULT lub TEST)
+    log_file = config.get(section, 'LOG', fallback='logs/app.log')
 
-        # Ustawienie poziomu logowania na loggerze na minimalny (konsola lub plik)
-        logger.setLevel(min(log_level_console, log_level_file))
+    # Dodanie znacznika czasu do pliku logowania
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    log_file_with_timestamp = f"{os.path.splitext(log_file)[0]}_{timestamp}.log"
 
-        # Tworzenie formatera
-        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    log_level_console = config.get(section, 'LOG_LEVEL_CONSOLE', fallback='INFO').upper()
+    log_level_file = config.get(section, 'LOG_LEVEL_FILE', fallback='INFO').upper()
 
-        # Tworzenie konsolowego handlera
-        console_handler = logging.StreamHandler()
-        console_handler.setLevel(log_level_console)
-        console_handler.setFormatter(formatter)
+    logger.setLevel(min(get_log_level(log_level_console), get_log_level(log_level_file)))
 
-        # Tworzenie plikowego handlera z kodowaniem UTF-8
-        file_handler = logging.FileHandler(log_file_with_timestamp, encoding='utf-8')
-        file_handler.setLevel(log_level_file)
-        file_handler.setFormatter(formatter)
+    # Dodanie handlerów (plik i konsola)
+    file_handler = logging.FileHandler(log_file_with_timestamp, encoding='utf-8')
+    console_handler = logging.StreamHandler()
 
-        # Dodanie handlerów do loggera
-        logger.addHandler(console_handler)
-        logger.addHandler(file_handler)
+    file_handler.setLevel(get_log_level(log_level_file))
+    console_handler.setLevel(get_log_level(log_level_console))
+
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
+    console_handler.setFormatter(formatter)
+
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
 
     return logger
+
+def get_log_level(level_str):
+    levels = {
+        'DEBUG': logging.DEBUG,
+        'INFO': logging.INFO,
+        'WARNING': logging.WARNING,
+        'ERROR': logging.ERROR,
+        'CRITICAL': logging.CRITICAL,
+    }
+    return levels.get(level_str, logging.INFO)
+
+def close_log_handlers(logger):
+    """Zamyka wszystkie uchwyty loggera, aby uniknąć wycieków plików."""
+    handlers = logger.handlers[:]
+    for handler in handlers:
+        try:
+            handler.acquire()  # Upewnijmy się, że blokujemy dostęp do uchwytu
+            handler.flush()     # Sprawdzamy, czy dane w buforze są zapisane
+            handler.close()     # Zamykamy uchwyt
+        except Exception as e:
+            print(f"Error while closing handler: {e}")
+        finally:
+            handler.release()  # Zwalniamy uchwyt
+            logger.removeHandler(handler)
