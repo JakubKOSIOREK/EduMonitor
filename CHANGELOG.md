@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## [1.2.0] - 2024-09-23
+### Dodano:
+- **Generowanie raportów HTML**: Program umożliwia generowanie raportu o stanie wyszkolenia pracowników z podziałem na grupy zawodowe. Raport zawiera liczbę pracowników z ważnymi, wygasającymi oraz przeterminowanymi szkoleniami. Raport jest generowany z timestampem w nazwie pliku.
+- **Aktualna data w raporcie**: W każdym wygenerowanym raporcie HTML wyświetlana jest aktualna data w formacie `Gdynia dnia <aktualna data>`.
+
 ## [1.1.0] - 2024-09-23
 ### Dodano:
 - **Generowanie list HTML**: Program umożliwia generowanie list pracowników do przeszkolenia w formacie HTML, podzielonych na grupy zawodowe. Funkcja jest dostępna pod flagą `--lists-html`.

@@ -1,0 +1,16 @@
+<!-- templates/employee_report_template.html -->
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Raport stanu wyszkolenia</title>
+</head>
+<body>
+    <h1>Raport stanu wyszkolenia</h1>
+    <p>Gdynia dnia {{ current_date }}</p>
+    <p>Liczba pracowników z ważnymi szkoleniami: {{ valid_training }}</p>
+    <p>Liczba pracowników z wygasającymi szkoleniami: {{ soon_expiring }}</p>
+    <p>Liczba pracowników z przeterminowanymi szkoleniami: {{ expired }}</p>
+</body>
+</html>
