@@ -16,7 +16,16 @@ class EmployeeManager:
         """
         Sprawdza pracowników z CSV w bazie danych z URL i aktualizuje ich dane. Weryfikuje poprawność dat.
         """
+        # Sprawdzamy, czy dane z bazy danych są dostępne
+        if not self.employees_db:
+            logger.warning("Brak danych z bazy danych. Ustawiam flagi db_url na False dla wszystkich pracowników z CSV.")
+            # Ustawienie flagi db_url na False dla wszystkich pracowników z CSV
+            for employee in self.employees_csv:
+                employee.db_url = False
+            return self.employees_csv
+
         db_employee_data = {(emp['nazwisko'].lower(), emp['imie'].lower()): emp for emp in self.employees_db}
+    
         for employee in self.employees_csv:
             # Sprawdzanie poprawności daty ważności szkolenia
             if not validate_date_format(employee.wazne_do.strftime("%d.%m.%Y")):

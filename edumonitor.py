@@ -1,5 +1,6 @@
 """ edumonitor.py """
 
+import os
 import argparse
 from src.csv_loader import CSVLoader
 from src.db_fetcher import fetch_employee_data_from_url
@@ -16,15 +17,24 @@ def main():
 
     parser = argparse.ArgumentParser(description='EduMonitor - wczytaj plik CSV i wyświetl dane.')
     parser.add_argument('--csv', type=str, help='Ścieżka do pliku CSV')
+    parser.add_argument('--test-csv', action='store_true', help='Użycie testowego pliku CSV z katalogu tests/test_files/')
     parser.add_argument('--shell', action='store_true', help='Wyświetlenie wyników w konsoli (tabele)')
     parser.add_argument('--lists-html', action='store_true', help='Generowanie list pracowników w formacie HTML')
     parser.add_argument('--report-html', action='store_true', help='Generowanie raportu o stanie wyszkolenia w formacie HTML')
     args = parser.parse_args()
 
-    if not args.csv:
-        logger.error("Błąd: Musisz podać ścieżkę do pliku CSV.")
+    if args.test_csv:
+        test_csv_path = os.path.join('tests', 'test_files', 'dane_testowe.csv')
+        if not os.path.exists(test_csv_path):
+            logger.error(f"Błąd: Plik testowy {test_csv_path} nie istnieje.")
+            return
+        csv_path = test_csv_path
+        logger.info(f"Użycie testowego pliku CSV: {csv_path}")
+    elif args.csv:
+        csv_path = args.csv
+    else:
+        logger.error("Błąd: Musisz podać ścieżkę do pliku CSV lub użyć flagi --test-csv.")
         return
-    csv_path = args.csv
 
     # Użycie ConfigLoader do wczytania konfiguracji
     config_loader = ConfigLoader()

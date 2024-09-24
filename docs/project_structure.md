@@ -28,6 +28,8 @@ edumonitor/
 │   └── employee_list_template.html
 │   └── employee_report_template.html
 ├── tests/
+|   └── test_files/
+|       └── dane_testowe.csv
 ├── tmp/
 ├── edumonitor.py
 ├── CHANGELOG.md

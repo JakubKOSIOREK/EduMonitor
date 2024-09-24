@@ -16,7 +16,7 @@ def fetch_employee_data_from_url(url):
         url (str): URL do pobrania danych.
     
     Returns:
-        list: Lista pracowników pobrana z zewnętrznego API.
+        list: Lista pracowników pobrana z zewnętrznego API lub pusta lista w przypadku błędu.
     """
     # Pobieramy ustawienie weryfikacji SSL z pliku konfiguracyjnego
     config_loader = ConfigLoader()
@@ -62,3 +62,6 @@ def fetch_employee_data_from_url(url):
     except Exception as e:
         logger.error(f"Nieoczekiwany błąd: {e}")
         return []
+
+    # Zwracamy pustą listę w przypadku błędu
+    #return []
