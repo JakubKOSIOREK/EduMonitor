@@ -1,0 +1,30 @@
+2024-09-25 08:58:57,671 - INFO - Program EduMonitor został uruchomiony.
+2024-09-25 08:58:57,687 - INFO - Rozpoczęto strumieniowe wczytywanie pliku CSV
+2024-09-25 08:58:57,687 - INFO - Zakończono filtrowanie danych. Wczytano 46 poprawnych pracowników, odrzucono 0 wierszy.
+2024-09-25 08:58:57,687 - INFO - Rozpoczęto pobieranie danych z URL
+2024-09-25 08:58:57,987 - INFO - Pobrano 281 rekordów pracowników z bazy danych.
+2024-09-25 08:58:57,987 - WARNING - Szkolenie przeterminowane dla: WAYNE
+2024-09-25 08:58:57,987 - WARNING - Szkolenie przeterminowane dla: KENT
+2024-09-25 08:58:57,987 - WARNING - Szkolenie przeterminowane dla: ROGERS
+2024-09-25 08:58:57,987 - WARNING - Szkolenie przeterminowane dla: PARKER
+2024-09-25 08:58:57,987 - WARNING - Szkolenie przeterminowane dla: DANVERS
+2024-09-25 08:58:57,987 - WARNING - Szkolenie przeterminowane dla: STARK
+2024-09-25 08:58:57,987 - WARNING - Szkolenie przeterminowane dla: ROMANOFF
+2024-09-25 08:58:58,002 - WARNING - Szkolenie przeterminowane dla: BANNER
+2024-09-25 08:58:58,002 - WARNING - Szkolenie przeterminowane dla: ALLEN
+2024-09-25 08:58:58,002 - WARNING - Szkolenie przeterminowane dla: QUEEN
+2024-09-25 08:58:58,002 - WARNING - Szkolenie przeterminowane dla: PRINCE
+2024-09-25 08:58:58,002 - WARNING - Szkolenie przeterminowane dla: LUTHOR
+2024-09-25 08:58:58,005 - WARNING - Szkolenie przeterminowane dla: STRANGE
+2024-09-25 08:58:58,006 - WARNING - Szkolenie przeterminowane dla: LOGAN
+2024-09-25 08:58:58,006 - WARNING - Szkolenie przeterminowane dla: SUMMERS
+2024-09-25 08:58:58,006 - WARNING - Szkolenie przeterminowane dla: WILSON
+2024-09-25 08:58:58,007 - WARNING - Szkolenie przeterminowane dla: BLAKE
+2024-09-25 08:58:58,007 - INFO - Znaleziono 0 kadry zarządzającej, 0 kierowniczej, oraz 46 pracowników.
+2024-09-25 08:58:58,053 - INFO - Wyświetlono 29 pracowników dla grupy 'Pracownicy - Aktualne szkolenie'
+2024-09-25 08:58:58,062 - INFO - Wyświetlono 17 pracowników dla grupy 'Pracownicy - Szkolenie wygaśnie w ciągu 30 dni lub już wygasło'
+2024-09-25 08:58:58,072 - INFO - Brak pracowników w grupie 'Kadra Zarządzająca'.
+2024-09-25 08:58:58,072 - INFO - Brak pracowników w grupie 'Kadra Kierownicza'.
+2024-09-25 08:58:58,078 - INFO - Lista pracowników 'Pracownicy' zapisana w output/lists/
+2024-09-25 08:58:58,080 - INFO - Raport HTML wygenerowany: output/reports/
+2024-09-25 08:58:58,084 - INFO - Program EduMonitor został zakończony.

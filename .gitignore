@@ -61,3 +61,4 @@ migrations/
 *.pdf
 output/
 !edumonitor_timestamp.log
+!logs/example_edumonitor_timestamp.log

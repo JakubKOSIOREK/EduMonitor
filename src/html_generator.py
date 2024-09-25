@@ -12,7 +12,8 @@ logger = setup_logger()
 class HTMLReportGenerator:
     def __init__(self, config_file='config/config.ini'):
         self.config_loader = ConfigLoader(config_file)
-        self.output_dir = self.config_loader.get_output_lists_dir()
+        self.lists_dir = self.config_loader.get_output_lists_dir()  # Ścieżka do katalogu na listy
+        self.reports_dir = self.config_loader.get_output_reports_dir()  # Ścieżka do katalogu na raporty
         self.templates_dir = 'templates'
         self.employee_list_template = self.load_template('employee_list_template.html')
         self.company_report_template = self.load_template('employee_report_template.html')
@@ -40,7 +41,7 @@ class HTMLReportGenerator:
             return
 
         file_name = f"{group_name.lower().replace(' ', '_')}_lista.html"
-        file_path = os.path.join(self.output_dir, file_name)
+        file_path = os.path.join(self.lists_dir, file_name)  # Zapisywanie w katalogu lists
         html_content = self.employee_list_template.render(group_name=group_name, employees=employees)
 
         with open(file_path, 'w', encoding='utf-8') as f:
@@ -62,7 +63,7 @@ class HTMLReportGenerator:
         current_date = format_date(datetime.now(), "%d.%m.%Y")
 
         file_name = f"raport_wyszkolenia_{datetime.now().strftime('%Y-%m-%d')}.html"
-        file_path = os.path.join(self.output_dir, file_name)
+        file_path = os.path.join(self.reports_dir, file_name)  # Zapisywanie w katalogu reports
         html_content = self.company_report_template.render(
             valid_training=len(valid_training),
             soon_expiring=len(soon_expiring),
