@@ -84,7 +84,13 @@ class ConfigLoader:
         """
         Pobiera ścieżkę do katalogu na listy HTML z pliku konfiguracyjnego.
         """
-        return self.get('OUTPUT', 'LISTS_DIR', fallback='output/lists/')
+        return self.get('OUTPUT', 'HTML_LISTS', fallback='output/lists/')
+
+    def get_output_reports_dir(self):
+        """
+        Pobiera ścieżkę do katalogu na raporty HTML z pliku konfiguracyjnego.
+        """
+        return self.get('OUTPUT', 'HTML_REPORTS', fallback='output/reports/')
 
     def _map_log_level(self, level):
         """
