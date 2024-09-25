@@ -104,3 +104,9 @@ class ConfigLoader:
             'CRITICAL': logging.CRITICAL
         }
         return log_levels.get(level, logging.INFO)
+    
+    def get_company_name(self):
+        """
+        Pobiera nazwę firmy z pliku konfiguracyjnego.
+        """
+        return self.get('DEFAULT', 'COMPANY_NAME', fallback='Example Company')
