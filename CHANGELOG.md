@@ -1,5 +1,33 @@
 # CHANGELOG
 
+## [v1.4.0] - 2024-09-25
+### Nowości:
+- **Dodano nowe zmienne konfiguracyjne** w pliku `config/config.ini`:
+  - `HTML_LISTS`: Ścieżka do katalogu, w którym zapisywane są listy pracowników w formacie HTML.
+  - `HTML_REPORTS`: Ścieżka do katalogu, w którym zapisywane są raporty o stanie wyszkolenia pracowników w formacie HTML.
+- **Flaga --test-csv**: Wprowadzono flagę `--test-csv`, która pozwala na szybkie testowanie programu za pomocą przykładowego pliku CSV z katalogu `tests/test_files/`.
+- **Testy jednostkowe**: Dodano kompleksowy zestaw testów jednostkowych obejmujących m.in.:
+  - Wczytywanie danych z plików CSV (`CSVLoader`).
+  - Porównywanie danych z pliku CSV z danymi z URL (`EmployeeManager`).
+  - Generowanie raportów HTML (`HTMLReportGenerator`).
+  - Wyświetlanie danych w konsoli (`TableDisplay`).
+  - Pobieranie danych z URL i obsługę wyjątków (`fetch_employee_data_from_url`).
+
+### Ulepszenia:
+- **Modularność kodu**: Przebudowano strukturę projektu, rozdzielając logikę na osobne moduły, takie jak `csv_loader`, `employee_management`, `html_generator`, `table_display`. To umożliwia łatwiejsze zarządzanie kodem i jego przyszłą rozbudowę.
+- **Poprawa logowania**: Dodano dedykowany moduł `logger_setup`, który konfiguruje logger na podstawie ustawień z pliku `config.ini`. Obsługiwane są różne poziomy logowania, a każde uruchomienie programu generuje plik logów z timestampem w nazwie.
+- **Obsługa wyjątków**: Lepsze zarządzanie błędami i wyjątkami dzięki dekoratorowi `@log_exceptions`, który automatycznie loguje nieoczekiwane błędy występujące podczas działania programu.
+- **Konfiguracja**: Wprowadzono klasę `ConfigLoader`, która ułatwia zarządzanie ustawieniami programu, takimi jak format dat, ścieżki do plików i ustawienia połączeń z bazą danych.
+
+### Poprawki:
+- **Poprawa loggera**: Upewniono się, że uchwyty loggera są prawidłowo zamykane, co eliminuje problemy z wyciekami zasobów (np. ostrzeżenia `ResourceWarning`).
+- **Poprawa obsługi wyjątków**: W funkcji `fetch_employee_data_from_url` wprowadzono lepszą obsługę błędów związanych z połączeniami (np. `ConnectionError`), timeoutami oraz błędami HTTP (404, 500).
+- **Elastyczne logowanie**: Dodano możliwość mockowania loggera w testach, co pozwala na wyciszenie zbędnych komunikatów i przyspieszenie testów.
+
+### Dokumentacja:
+- Zaktualizowano dokumentację, aby odzwierciedlała wszystkie zmiany wprowadzone w tej wersji, w tym nową strukturę modułów, konfigurację logowania oraz zarządzanie wyjątkami.
+- Dodano szczegółowe informacje dotyczące konfiguracji programu, w tym zarządzanie katalogami dla plików HTML i CSV oraz formatowanie dat.
+
 ## [v1.3.2] - 2024-09-25
 ### Naprawy i zmiany:
 - **Dodano nowe zmienne konfiguracyjne w pliku `config/config.ini`**:
