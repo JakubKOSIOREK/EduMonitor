@@ -73,7 +73,7 @@ class EmployeeManager:
             management_keywords = ["kadra zarządzająca", "zarząd", "CEO", "dyrektor"]
 
         if leadership_keywords is None:
-            leadership_keywords = ["kierownik"]
+            leadership_keywords = ["kadra kierownicza", "kierownik"]
 
         kadra_zarzadcza = [emp for emp in self.employees_csv if any(keyword in emp.stanowisko.lower() for keyword in management_keywords)]
         kadra_kierownicza = [emp for emp in self.employees_csv if any(keyword in emp.stanowisko.lower() for keyword in leadership_keywords)]
