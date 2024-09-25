@@ -1,5 +1,94 @@
 # CHANGELOG
 
+## [v1.4.0] - 2024-09-25
+### Nowości:
+- **Dodano nowe zmienne konfiguracyjne** w pliku `config/config.ini`:
+  - `HTML_LISTS`: Ścieżka do katalogu, w którym zapisywane są listy pracowników w formacie HTML.
+  - `HTML_REPORTS`: Ścieżka do katalogu, w którym zapisywane są raporty o stanie wyszkolenia pracowników w formacie HTML.
+- **Flaga --test-csv**: Wprowadzono flagę `--test-csv`, która pozwala na szybkie testowanie programu za pomocą przykładowego pliku CSV z katalogu `tests/test_files/`.
+- **Testy jednostkowe**: Dodano kompleksowy zestaw testów jednostkowych obejmujących m.in.:
+  - Wczytywanie danych z plików CSV (`CSVLoader`).
+  - Porównywanie danych z pliku CSV z danymi z URL (`EmployeeManager`).
+  - Generowanie raportów HTML (`HTMLReportGenerator`).
+  - Wyświetlanie danych w konsoli (`TableDisplay`).
+  - Pobieranie danych z URL i obsługę wyjątków (`fetch_employee_data_from_url`).
+
+### Ulepszenia:
+- **Modularność kodu**: Przebudowano strukturę projektu, rozdzielając logikę na osobne moduły, takie jak `csv_loader`, `employee_management`, `html_generator`, `table_display`. To umożliwia łatwiejsze zarządzanie kodem i jego przyszłą rozbudowę.
+- **Poprawa logowania**: Dodano dedykowany moduł `logger_setup`, który konfiguruje logger na podstawie ustawień z pliku `config.ini`. Obsługiwane są różne poziomy logowania, a każde uruchomienie programu generuje plik logów z timestampem w nazwie.
+- **Obsługa wyjątków**: Lepsze zarządzanie błędami i wyjątkami dzięki dekoratorowi `@log_exceptions`, który automatycznie loguje nieoczekiwane błędy występujące podczas działania programu.
+- **Konfiguracja**: Wprowadzono klasę `ConfigLoader`, która ułatwia zarządzanie ustawieniami programu, takimi jak format dat, ścieżki do plików i ustawienia połączeń z bazą danych.
+
+### Poprawki:
+- **Poprawa loggera**: Upewniono się, że uchwyty loggera są prawidłowo zamykane, co eliminuje problemy z wyciekami zasobów (np. ostrzeżenia `ResourceWarning`).
+- **Poprawa obsługi wyjątków**: W funkcji `fetch_employee_data_from_url` wprowadzono lepszą obsługę błędów związanych z połączeniami (np. `ConnectionError`), timeoutami oraz błędami HTTP (404, 500).
+- **Elastyczne logowanie**: Dodano możliwość mockowania loggera w testach, co pozwala na wyciszenie zbędnych komunikatów i przyspieszenie testów.
+
+### Dokumentacja:
+- Zaktualizowano dokumentację, aby odzwierciedlała wszystkie zmiany wprowadzone w tej wersji, w tym nową strukturę modułów, konfigurację logowania oraz zarządzanie wyjątkami.
+- Dodano szczegółowe informacje dotyczące konfiguracji programu, w tym zarządzanie katalogami dla plików HTML i CSV oraz formatowanie dat.
+
+## [v1.3.2] - 2024-09-25
+### Naprawy i zmiany:
+- **Dodano nowe zmienne konfiguracyjne w pliku `config/config.ini`**:
+  - `HTML_LISTS` dla katalogu, w którym zapisywane są listy pracowników w formacie HTML.
+  - `HTML_REPORTS` dla katalogu, w którym zapisywane są raporty o stanie wyszkolenia pracowników w formacie HTML.
+- **Aktualizacja modułu `HTMLReportGenerator`**:
+  - Oddzielenie zapisywania list pracowników i raportów szkoleniowych do odpowiednich katalogów na podstawie zmiennych z pliku konfiguracyjnego.
+  - Listy pracowników są teraz zapisywane w katalogu `output/lists/`, a raporty w katalogu `output/reports/`.
+- **Aktualizacja testów**:
+  - Zaktualizowano testy w pliku `tests/test_HTMLReportGenerator.py`, aby uwzględniały nowe ścieżki katalogów dla list i raportów.
+  - Testy sprawdzają teraz poprawność generowania raportów i list HTML oraz poprawność ścieżek do plików.
+
+## [1.3.1] - 2024-09-25
+### Dodano:
+- **Testy jednostkowe:**
+    - Dodano kompleksowy zestaw testów jednostkowych dla modułów projektu, w tym:
+        - Testy dla wczytywania danych z plików CSV (`CSVLoader`).
+        - Testy dla porównywania danych z pliku CSV z danymi z URL (`EmployeeManager`).
+        - Testy dla generowania raportów HTML (`HTMLReportGenerator`).
+        - Testy dla wyświetlania danych w konsoli (`TableDisplay`).
+        - Testy dla funkcji pobierającej dane pracowników z URL (`fetch_employee_data_from_url`), z obsługą błędów połączeń i statusów HTTP.
+    - Testy obejmują mockowanie połączeń HTTP oraz loggera, co pozwala na szybsze i bardziej niezawodne testy.
+- **Flaga --test-csv:**
+    - Dodano flagę --test-csv, która umożliwia wczytywanie pliku testowego CSV bez potrzeby podawania pełnej ścieżki. Flaga używa domyślnie pliku testowego dane_testowe.csv z katalogu tests/test_files/.
+    - Flaga ułatwia szybkie testowanie programu bez konieczności korzystania z rzeczywistych plików danych.
+
+### Poprawiono:
+- **Logger:**
+    - Ulepszono obsługę loggera poprzez wprowadzenie dedykowanego modułu `logger_setup`, który konfiguruje logger w oparciu o plik konfiguracyjny `config.ini`.
+    - Dodano możliwość mockowania loggera w testach, co pozwala na wyciszenie zbędnych komunikatów i przyspieszenie testów.
+    - Umożliwiono resetowanie handlerów loggera, aby uniknąć powielania komunikatów podczas wielokrotnych uruchomień testów.
+- **Obsługa wyjątków:**
+    - Wprowadzono lepszą obsługę wyjątków w funkcji `fetch_employee_data_from_url`, która teraz loguje błędy związane z połączeniami (np. `ConnectionError`), timeoutami oraz błędami HTTP (404, 500).
+    - Zastosowano dekorator `@log_exceptions`, który automatycznie loguje nieoczekiwane wyjątki podczas działania programu, co ułatwia diagnostykę problemów.
+
+### Usunięto:
+- **Niepotrzebne komunikaty logowania:**
+    - Usunięto niepotrzebne komunikaty logowania, które były wywoływane w testach, eliminując problemy związane z zaśmiecaniem konsoli.
+
+## [1.3.0] - 2024-09-24
+### Usunięto:
+- **Testy jednostkowe**: Usunięto wszystkie testy jednostkowe z projektu, w tym pliki testowe oraz wszelkie zależności i konfiguracje związane z testowaniem (np. unittest, pliki w katalogu tests/).
+- **Sekcja TEST w pliku konfiguracyjnym**: Sekcja odpowiadająca za testowe ustawienia logowania (tj. LOG_LEVEL_CONSOLE, LOG_LEVEL_FILE, i LOG dla sekcji TEST) została usunięta z pliku config/config.ini.
+- **Obsługa logowania dla testów**: Usunięto modyfikacje loggera związane z ustawieniami logowania tylko dla testów. Przywrócono domyślną konfigurację logowania dla programu.
+
+### Zmieniono:
+- **Przebudowa struktury projektu**: Wprowadzono znaczącą refaktoryzację kodu w celu zwiększenia czytelności, modularności oraz łatwości rozbudowy. Główne zmiany to:
+    - **Modularność**: Rozbicie logiki na osobne moduły (m.in. `csv_loader`, `employee_management`, `html_generator`, `table_display`) w celu lepszego zarządzania kodem oraz ułatwienia rozszerzalności programu.
+    - **Ulepszone logowanie**: Logger został przeniesiony do dedykowanego modułu `logger_setup`. Obsługuje teraz różne poziomy logowania (np. INFO, ERROR) z możliwością konfiguracji przez plik `config.ini`. Każde uruchomienie programu generuje plik logów z timestampem w nazwie.
+    - **Lepsza obsługa wyjątków**: Dzięki wprowadzeniu dekoratora `@log_exceptions` możliwe jest automatyczne logowanie wyjątków, co ułatwia diagnostykę błędów i problemów występujących podczas działania programu.
+    - **Elastyczność konfiguracji**: Dodano dedykowaną klasę `ConfigLoader`, która umożliwia łatwe zarządzanie konfiguracjami z pliku `config.ini`. Obsługuje m.in. format dat, ścieżki do plików logów oraz ustawienia dla połączeń z bazą danych.
+- **Logger**: Przywrócono domyślne logowanie programu, usunięto logikę odpowiadającą za wyłączanie `StreamHandler` podczas testów. Logger nie ma już specjalnej konfiguracji związanej z testami.
+- **Zamknięcie uchwytów loggera**: Wprowadzono poprawkę dotyczącą zamykania uchwytów loggera, aby uniknąć problemów z niezamkniętymi plikami logów i ostrzeżeniami dotyczącymi `ResourceWarning`.
+
+### Naprawiono:
+- **Ostrzeżenia ResourceWarning**: Naprawiono problem z ostrzeżeniami o niezamkniętych plikach logów. Upewniono się, że uchwyty loggera są prawidłowo zamykane, co eliminuje wycieki zasobów.
+
+### Dokumentacja:
+- Zaktualizowano dokumentację, usuwając wszelkie wzmianki o testach jednostkowych oraz sekcji TEST w pliku konfiguracyjnym.
+- Uaktualniono instrukcje dotyczące konfiguracji programu, uwzględniając nowe możliwości zarządzania logowaniem oraz konfiguracją poprzez `config.ini`.
+
 ## [1.2.0] - 2024-09-23
 ### Dodano:
 - **Generowanie raportów HTML**: Program umożliwia generowanie raportu o stanie wyszkolenia pracowników z podziałem na grupy zawodowe. Raport zawiera liczbę pracowników z ważnymi, wygasającymi oraz przeterminowanymi szkoleniami. Raport jest generowany z timestampem w nazwie pliku.
