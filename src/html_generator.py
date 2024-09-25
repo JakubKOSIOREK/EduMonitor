@@ -7,6 +7,8 @@ from datetime import datetime
 from src.utility.formatting import format_date
 from src.logger_setup import setup_logger
 from src.utility.logging_decorator import log_exceptions
+from src.employee_management import EmployeeManager
+
 logger = setup_logger()
 
 class HTMLReportGenerator:
@@ -57,19 +59,45 @@ class HTMLReportGenerator:
 
     @log_exceptions(logger)
     def generate_training_report(self, employees):
-        """Generuje raport HTML o stanie szkoleń."""
+        """Generuje raport HTML o stanie szkoleń z podziałem na grupy zawodowe."""
+
+        # Podsumowanie dla całej firmy
         valid_training, soon_expiring, expired = self._get_training_summary(employees)
+
+        # Liczenie pracowników w firmie
+        total_employees = len(employees)
+
+        # Podział na grupy zawodowe
+        manager = EmployeeManager(employees, [])
+        kadra_zarzadcza, kadra_kierownicza, pracownicy = manager.filter_by_position()
+
+        # Liczenie pracowników w każdej grupie
+        def group_summary(group):
+            valid, soon_expiring, expired = self._get_training_summary(group)
+            return {
+                "valid": len(valid),
+                "soon_expiring": len(soon_expiring),
+                "expired": len(expired)
+            }
+        
+        kadra_zarzadcza_summary = group_summary(kadra_zarzadcza)
+        kadra_kierownicza_summary = group_summary(kadra_kierownicza)
+        pracownicy_summary = group_summary(pracownicy)
 
         current_date = format_date(datetime.now(), "%d.%m.%Y")
 
+        # Generowanie treści HTML
         file_name = f"raport_wyszkolenia_{datetime.now().strftime('%Y-%m-%d')}.html"
         file_path = os.path.join(self.reports_dir, file_name)  # Zapisywanie w katalogu reports
         html_content = self.company_report_template.render(
-            valid_training=len(valid_training),
-            soon_expiring=len(soon_expiring),
-            expired=len(expired),
-            employees=employees,
-            current_date=current_date
+            valid_training = len(valid_training),
+            soon_expiring = len(soon_expiring),
+            expired = len(expired),
+            total_employees = total_employees,
+            current_date = current_date,
+            kadra_zarzadcza_summary = kadra_zarzadcza_summary,
+            kadra_kierownicza_summary = kadra_kierownicza_summary,
+            pracownicy_summary = pracownicy_summary
         )
 
         with open(file_path, 'w', encoding='utf-8') as f:
