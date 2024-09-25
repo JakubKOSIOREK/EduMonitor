@@ -1,33 +1,215 @@
-<!-- templates/employee_report_template.html -->
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Raport stanu wyszkolenia</title>
+    <title>Raport z odbytych szkoleń Security Awareness</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header-date {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 12px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 20px;
+            color: #333;
+        }
+
+        h2 {
+            background-color: #0056b3;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        p {
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .report-section {
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .status {
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .valid {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .soon-expiring {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+        }
+
+        .expired {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 5px;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Stylizacja dla wydruku */
+        @media print {
+            body {
+                margin: 0;
+                padding: 10mm;
+                background-color: white;
+                box-shadow: none;
+                font-size: 10px;
+            }
+
+            .header-date {
+                position: absolute;
+                top: 10mm;
+                right: 10mm;
+                font-size: 10px;
+            }
+
+            h1 {
+                font-size: 18px;
+                margin-top: 30mm;
+            }
+
+            h2 {
+                font-size: 14px;
+            }
+
+            table, th, td {
+                font-size: 10px;
+                padding: 3px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Raport stanu wyszkolenia</h1>
-    <p>Gdynia dnia {{ current_date }}</p>
+    <!-- Data w prawym górnym rogu -->
+    <div class="header-date">
+        <p>Gdynia dnia {{ current_date }}</p>
+    </div>
+
+    <div class="header">
+        <h1>Raport z odbytych szkoleń Security Awareness</h1>
+    </div>
+
     <p>Stan osobowy {{ company_name }}: {{ total_employees }}</p>
 
-    <p>Liczba pracowników z ważnymi szkoleniami: {{ valid_training }}</p>
-    <p>Liczba pracowników z wygasającymi szkoleniami: {{ soon_expiring }}</p>
-    <p>Liczba pracowników z przeterminowanymi szkoleniami: {{ expired }}</p>
+    <div class="report-section">
+        <h2>Podsumowanie dla całej firmy</h2>
+        <p class="valid status">Liczba pracowników z ważnymi szkoleniami: {{ valid_training }}</p>
+        <p class="soon-expiring status">Liczba pracowników z wygasającymi szkoleniami: {{ soon_expiring }}</p>
+        <p class="expired status">Liczba pracowników z przeterminowanymi szkoleniami: {{ expired }}</p>
+    </div>
 
-    <h2>Kadra zarządzająca</h2>
-    <p>Liczba pracowników z ważnymi szkoleniami: {{ kadra_zarzadcza_summary.valid }}</p>
-    <p>Liczba pracowników z wygasającymi szkoleniami: {{ kadra_zarzadcza_summary.soon_expiring }}</p>
-    <p>Liczba pracowników z przeterminowanymi szkoleniami: {{ kadra_zarzadcza_summary.expired }}</p>
+    <div class="report-section">
+        <h2>Kadra zarządzająca</h2>
+        <table>
+            <tr>
+                <th>Status</th>
+                <th>Liczba pracowników</th>
+            </tr>
+            <tr>
+                <td class="valid">Ważne szkolenia</td>
+                <td>{{ kadra_zarzadcza_summary.valid }}</td>
+            </tr>
+            <tr>
+                <td class="soon-expiring">Szkolenia wygasające</td>
+                <td>{{ kadra_zarzadcza_summary.soon_expiring }}</td>
+            </tr>
+            <tr>
+                <td class="expired">Przeterminowane szkolenia</td>
+                <td>{{ kadra_zarzadcza_summary.expired }}</td>
+            </tr>
+        </table>
+    </div>
 
-    <h2>Kadra kierownicza</h2>
-    <p>Liczba pracowników z ważnymi szkoleniami: {{ kadra_kierownicza_summary.valid }}</p>
-    <p>Liczba pracowników z wygasającymi szkoleniami: {{ kadra_kierownicza_summary.soon_expiring }}</p>
-    <p>Liczba pracowników z przeterminowanymi szkoleniami: {{ kadra_kierownicza_summary.expired }}</p>
+    <div class="report-section">
+        <h2>Kadra kierownicza</h2>
+        <table>
+            <tr>
+                <th>Status</th>
+                <th>Liczba pracowników</th>
+            </tr>
+            <tr>
+                <td class="valid">Ważne szkolenia</td>
+                <td>{{ kadra_kierownicza_summary.valid }}</td>
+            </tr>
+            <tr>
+                <td class="soon-expiring">Szkolenia wygasające</td>
+                <td>{{ kadra_kierownicza_summary.soon_expiring }}</td>
+            </tr>
+            <tr>
+                <td class="expired">Przeterminowane szkolenia</td>
+                <td>{{ kadra_kierownicza_summary.expired }}</td>
+            </tr>
+        </table>
+    </div>
 
-    <h2>Pracownicy</h2>
-    <p>Liczba pracowników z ważnymi szkoleniami: {{ pracownicy_summary.valid }}</p>
-    <p>Liczba pracowników z wygasającymi szkoleniami: {{ pracownicy_summary.soon_expiring }}</p>
-    <p>Liczba pracowników z przeterminowanymi szkoleniami: {{ pracownicy_summary.expired }}</p>
+    <div class="report-section">
+        <h2>Pracownicy</h2>
+        <table>
+            <tr>
+                <th>Status</th>
+                <th>Liczba pracowników</th>
+            </tr>
+            <tr>
+                <td class="valid">Ważne szkolenia</td>
+                <td>{{ pracownicy_summary.valid }}</td>
+            </tr>
+            <tr>
+                <td class="soon-expiring">Szkolenia wygasające</td>
+                <td>{{ pracownicy_summary.soon_expiring }}</td>
+            </tr>
+            <tr>
+                <td class="expired">Przeterminowane szkolenia</td>
+                <td>{{ pracownicy_summary.expired }}</td>
+            </tr>
+        </table>
+    </div>
 </body>
 </html>
