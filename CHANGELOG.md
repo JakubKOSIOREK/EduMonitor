@@ -1,5 +1,32 @@
 # CHANGELOG
 
+## [Unversioned] - 2024-09-25
+### Dodano:
+- **Testy jednostkowe:**
+    - Dodano kompleksowy zestaw testów jednostkowych dla modułów projektu, w tym:
+        - Testy dla wczytywania danych z plików CSV (`CSVLoader`).
+        - Testy dla porównywania danych z pliku CSV z danymi z URL (`EmployeeManager`).
+        - Testy dla generowania raportów HTML (`HTMLReportGenerator`).
+        - Testy dla wyświetlania danych w konsoli (`TableDisplay`).
+        - Testy dla funkcji pobierającej dane pracowników z URL (`fetch_employee_data_from_url`), z obsługą błędów połączeń i statusów HTTP.
+    - Testy obejmują mockowanie połączeń HTTP oraz loggera, co pozwala na szybsze i bardziej niezawodne testy.
+- **Flaga --test-csv:**
+    - Dodano flagę --test-csv, która umożliwia wczytywanie pliku testowego CSV bez potrzeby podawania pełnej ścieżki. Flaga używa domyślnie pliku testowego dane_testowe.csv z katalogu tests/test_files/.
+    - Flaga ułatwia szybkie testowanie programu bez konieczności korzystania z rzeczywistych plików danych.
+
+### Poprawiono:
+- **Logger:**
+    - Ulepszono obsługę loggera poprzez wprowadzenie dedykowanego modułu `logger_setup`, który konfiguruje logger w oparciu o plik konfiguracyjny `config.ini`.
+    - Dodano możliwość mockowania loggera w testach, co pozwala na wyciszenie zbędnych komunikatów i przyspieszenie testów.
+    - Umożliwiono resetowanie handlerów loggera, aby uniknąć powielania komunikatów podczas wielokrotnych uruchomień testów.
+- **Obsługa wyjątków:**
+    - Wprowadzono lepszą obsługę wyjątków w funkcji `fetch_employee_data_from_url`, która teraz loguje błędy związane z połączeniami (np. `ConnectionError`), timeoutami oraz błędami HTTP (404, 500).
+    - Zastosowano dekorator `@log_exceptions`, który automatycznie loguje nieoczekiwane wyjątki podczas działania programu, co ułatwia diagnostykę problemów.
+
+### Usunięto:
+- **Niepotrzebne komunikaty logowania:**
+    - Usunięto niepotrzebne komunikaty logowania, które były wywoływane w testach, eliminując problemy związane z zaśmiecaniem konsoli.
+
 ## [1.3.0] - 2024-09-24
 ### Usunięto:
 - **Testy jednostkowe**: Usunięto wszystkie testy jednostkowe z projektu, w tym pliki testowe oraz wszelkie zależności i konfiguracje związane z testowaniem (np. unittest, pliki w katalogu tests/).

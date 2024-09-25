@@ -22,6 +22,9 @@ Program można uruchomić, używając flagi `--csv` . Aby wyniki były wyświetl
    python3 edumonitor.py --csv <ścieżka do pliku CSV> --lists-html
    python3 edumonitor.py --csv <ścieżka do pliku CSV> --lists-html --shell
    python3 edumonitor.py --csv <ścieżka do pliku CSV> --report-html
+   python3 edumonitor.py --test-csv --shell
+   python3 edumonitor.py --test-csv --lists-html
+   python3 edumonitor.py --test-csv --report-html
    ```
 Po wczytaniu pliku CSV (w formacie `cp1250`), program przetwarza dane pracowników, porównuje je z danymi pobranymi z URL (zdefiniowanego w pliku konfiguracyjnym `config/config.ini`) i wyświetla wyniki na konsoli w formie tabeli, jeśli podano flagę `--shell`.
 
@@ -29,6 +32,8 @@ Po wczytaniu pliku CSV (w formacie `cp1250`), program przetwarza dane pracownik�
 - `--csv <ścieżka do pliku>`: Wczytuje dane z pliku CSV i wyświetla je po przetworzeniu oraz porównaniu z danymi z bazy URL.
 - `--shell`: Wyświetla dane w konsoli w formie tabeli.
 - `--lists-html`: Generuje listy pracowników do przeszkolenia w formacie HTML. Tworzy pliki HTML z pracownikami, którym kończy się szkolenie lub których szkolenie się skończyło, w katalogu `output/lists/`.
+- `--test-csv`: Używa pliku CSV testowego `tests/test_files/dane_testowe.csv`, co jest przydatne do testowania bez konieczności podawania ścieżki.
+- `--report-html`: Generuje raport o stanie wyszkolenia pracowników w formacie HTML, zapisując go w katalogu `output/reports/`.
 - `-h / --help`: Wyświetla pomoc dotyczącą dostępnych opcji.
 
 ## Funkcjonalności
@@ -39,6 +44,8 @@ Po wczytaniu pliku CSV (w formacie `cp1250`), program przetwarza dane pracownik�
 - **Generowanie list HTML**: Program generuje listy HTML z pracownikami, którym kończy się szkolenie lub których szkolenie już wygasło. Listy są zapisywane w katalogu `output/lists/` i podzielone na grupy zawodowe.
 - **Generowanie raportów HTML**: Program umożliwia generowanie raportów o stanie wyszkolenia pracowników w formacie HTML, podzielonych na grupy zawodowe. Raport zawiera liczbę pracowników z ważnymi, wygasającymi oraz przeterminowanymi szkoleniami. Raport jest generowany z timestampem w nazwie pliku i jest dostępny pod flagą `--report-html`.
 - **Wyświetlanie wyników**: Program wyświetla dane w formie tabeli w konsoli (przy użyciu flagi `--shell`), pokazując m.in. informacje o tym, czy pracownik istnieje w bazie URL (`db_url = True`).
+- **Mockowanie połączeń**: Podczas testowania, połączenia z URL są mockowane, co umożliwia szybkie i niezależne testowanie funkcji sieciowych.
+- **Lepsza obsługa wyjątków**: Wprowadzono dekorator @log_exceptions, który automatycznie loguje wyjątki występujące podczas działania programu, ułatwiając diagnozowanie problemów.
 
 ## Przykład działania
 Po uruchomieniu programu:
@@ -83,7 +90,6 @@ URL = https://example.com/data
 #
 VERIFY_SSL = True
 ```
-<!--
 ## Testowanie
 Projekt zawiera testy jednostkowe, które sprawdzają poprawność wczytywania danych z plików CSV oraz JSON, a także funkcji porównujących dane pracowników. Aby uruchomić testy, użyj następującego polecenia:
 
@@ -92,13 +98,14 @@ python3 -m unittest discover -s tests
 ```
 
 **Testy obejmują:**
-- Wczytywanie danych z plików CSV (`load_file()`).
-- Filtrowanie danych z plików CSV (`filter_file()`).
-- Porównanie danych z pliku CSV z bazą danych z URL (`check_employee_in_db()`).
-- Wczytywanie danych z plików JSON (`fetch_employee_data_from_file()`).
-- Sprawdzanie statusu ważności szkoleń (`is_expired()`, `is_soon_expiring()`).
--->
+- Wczytywanie danych z plików CSV (`CSVLoader.load_file_stream()`).
+- Filtrowanie i walidację danych z CSV (`CSVLoader.filter_file()`).
+- Porównanie danych z pliku CSV z bazą danych z URL (`EmployeeManager.check_employee_in_db()`).
+- Generowanie raportów HTML (`HTMLReportGenerator`).
+- Obsługa wyjątków i logowania błędów (`fetch_employee_data_from_url()`).
+- Wyświetlanie danych w konsoli (`TableDisplay`).
 
+Testy są mockowane, co umożliwia symulowanie odpowiedzi z URL i unikanie rzeczywistych połączeń podczas testów.
 
 ## Logowanie
 Poziom logowania można ustawić na dwa sposoby:
@@ -111,7 +118,7 @@ Poziom logowania można ustawić na dwa sposoby:
    export LOG_LEVEL_FILE=INFO
    ```
 Jeśli zmienne środowiskowe są ustawione, mają one pierwszeństwo nad wartościami z pliku konfiguracyjnego.
-
+Podczas testów jednostkowych logger jest mockowany, co pozwala na wyciszenie niepotrzebnych komunikatów w trakcie testowania. Dzięki temu testy przebiegają szybciej, a wyjście na konsolę jest czystsze.
 ## Dokumentacja
 
 Szczegółowy opis działania programu, przepływu danych oraz struktury projektu znajdziesz w [docs/data_flow.pdf](docs/data_flow.md).

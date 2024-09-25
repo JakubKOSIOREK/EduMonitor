@@ -11,6 +11,9 @@ edumonitor/
 |   ├── project_structure.md    # Struktura projektu
 |   └── project_structure.pdf
 ├── logs/
+├── outputs/
+|   ├── lists/
+|   └── reports/
 ├── src/
 |   ├── utility/
 |   |   ├── exceptioon_handling.py
@@ -28,8 +31,14 @@ edumonitor/
 │   └── employee_list_template.html
 │   └── employee_report_template.html
 ├── tests/
-|   └── test_files/
-|       └── dane_testowe.csv
+|   ├── test_files/
+|   |   └── dane_testowe.csv
+|   ├── test_CSVLoader.py
+|   ├── test_EmployeeManager.py
+|   ├── test_fetch_employee_data_from_url.py
+|   ├── test_HTMLReportGenerator.py
+|   ├── test_TestEduMonitor.py
+|   └── test_TestTableDisplay.py
 ├── tmp/
 ├── edumonitor.py
 ├── CHANGELOG.md
