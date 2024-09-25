@@ -59,7 +59,12 @@ class HTMLReportGenerator:
 
     @log_exceptions(logger)
     def generate_training_report(self, employees):
-        """Generuje raport HTML o stanie szkoleń z podziałem na grupy zawodowe."""
+        """
+        Generuje raport HTML o stanie szkoleń z podziałem na grupy zawodowe.
+        """
+
+        # Pobranie nazwy firmy z konfiguracji
+        company_name = self.config_loader.get_company_name()
 
         # Podsumowanie dla całej firmy
         valid_training, soon_expiring, expired = self._get_training_summary(employees)
@@ -95,6 +100,7 @@ class HTMLReportGenerator:
             expired = len(expired),
             total_employees = total_employees,
             current_date = current_date,
+            company_name = company_name,
             kadra_zarzadcza_summary = kadra_zarzadcza_summary,
             kadra_kierownicza_summary = kadra_kierownicza_summary,
             pracownicy_summary = pracownicy_summary
