@@ -137,10 +137,9 @@
         <h1>Raport z odbytych szkoleń Security Awareness</h1>
     </div>
 
-    <p>Stan osobowy {{ company_name }}: {{ total_employees }}</p>
-
     <div class="report-section">
         <h2>Podsumowanie dla całej firmy</h2>
+        <p>Stan osobowy w {{ company_name }} na dzień {{ current_date }} : {{ total_employees }}</p>
         <p class="valid status">Liczba pracowników z ważnymi szkoleniami: {{ valid_training }}</p>
         <p class="soon-expiring status">Liczba pracowników z wygasającymi szkoleniami: {{ soon_expiring }}</p>
         <p class="expired status">Liczba pracowników z przeterminowanymi szkoleniami: {{ expired }}</p>
@@ -148,6 +147,7 @@
 
     <div class="report-section">
         <h2>Kadra zarządzająca</h2>
+        <p>Liczba pracowników w grupie: {{ kadra_zarzadcza_count }}</p>
         <table>
             <tr>
                 <th>Status</th>
@@ -170,6 +170,7 @@
 
     <div class="report-section">
         <h2>Kadra kierownicza</h2>
+        <p>Liczba pracowników w grupie: {{ kadra_kierownicza_count }}</p>
         <table>
             <tr>
                 <th>Status</th>
@@ -192,6 +193,7 @@
 
     <div class="report-section">
         <h2>Pracownicy</h2>
+        <p>Liczba pracowników w grupie: {{ pracownicy_count }}</p>
         <table>
             <tr>
                 <th>Status</th>
