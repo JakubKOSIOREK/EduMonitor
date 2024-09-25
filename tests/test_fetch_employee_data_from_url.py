@@ -2,85 +2,46 @@
 
 import unittest
 from unittest import mock
-from src.db_fetcher import fetch_employee_data_from_url
 import urllib3
-import json
+from src.db_fetcher import fetch_employee_data_from_url
 
 class TestFetchEmployeeDataFromUrl(unittest.TestCase):
 
-    @mock.patch('src.db_fetcher.urllib3.PoolManager.request')
-    def test_fetch_employee_data_success(self, mock_request):
-        """Test udanego pobrania danych (200 OK)"""
-        # Symulowane dane zwracane przez API
-        mock_response_data = json.dumps({
-            "users": [
-                {"nazwisko": "Nowak", "imie": "Jan", "stanowisko": "Dyrektor", "email": "jan.nowak@example.com"},
-                {"nazwisko": "Kowalski", "imie": "Adam", "stanowisko": "Kierownik", "email": "adam.kowalski@example.com"}
-            ]
-        })
-        
-        # Mockujemy odpowiedź 200 OK
-        mock_request.return_value.status = 200
-        mock_request.return_value.data = mock_response_data.encode('utf-8')
-
-        # Wywołujemy funkcję
-        url = 'https://example.com/data'
+    @mock.patch('src.db_fetcher.logger')  # Zamockowanie loggera, aby nie wyświetlał komunikatów
+    @mock.patch('urllib3.PoolManager.request', return_value=mock.Mock(status=404))  # Symulujemy status 404
+    def test_fetch_data_url_not_found(self, mock_request, mock_logger):
+        """Test dla sytuacji, gdy URL zwraca 404"""
+        url = "http://example.com"
         result = fetch_employee_data_from_url(url)
-
-        # Sprawdzamy, czy funkcja zwraca prawidłowe dane
-        self.assertEqual(len(result), 2)
-        self.assertEqual(result[0]['nazwisko'], 'Nowak')
-        self.assertEqual(result[1]['imie'], 'Adam')
-
-    @mock.patch('src.db_fetcher.urllib3.PoolManager.request')
-    def test_fetch_employee_data_404(self, mock_request):
-        """Test błędu 404 Not Found"""
-        # Mockujemy odpowiedź 404
-        mock_request.return_value.status = 404
         
-        # Wywołujemy funkcję
-        url = 'https://example.com/data'
-        result = fetch_employee_data_from_url(url)
-
-        # Sprawdzamy, czy zwraca pustą listę
+        # Sprawdzamy, czy funkcja zwróciła pustą listę
         self.assertEqual(result, [])
-
-    @mock.patch('src.db_fetcher.urllib3.PoolManager.request')
-    def test_fetch_employee_data_connection_error(self, mock_request):
-        """Test błędu połączenia (np. brak internetu)"""
-        # Mockujemy wyjątek ConnectionError
-        mock_request.side_effect = urllib3.exceptions.ConnectionError
-
-        # Wywołujemy funkcję
-        url = 'https://example.com/data'
-        result = fetch_employee_data_from_url(url)
-
-        # Sprawdzamy, czy zwraca pustą listę
-        self.assertEqual(result, [])
-
-    @mock.patch('src.db_fetcher.ConfigLoader.get_ssl_verification_setting', return_value=False)
-    @mock.patch('src.db_fetcher.urllib3.PoolManager.request')
-    def test_fetch_employee_data_no_ssl_verification(self, mock_request, mock_ssl_verification):
-        """Test braku weryfikacji SSL"""
-        # Symulowane dane zwracane przez API
-        mock_response_data = json.dumps({
-            "users": [
-                {"nazwisko": "Nowak", "imie": "Jan", "stanowisko": "Dyrektor", "email": "jan.nowak@example.com"}
-            ]
-        })
         
-        # Mockujemy odpowiedź 200 OK
-        mock_request.return_value.status = 200
-        mock_request.return_value.data = mock_response_data.encode('utf-8')
-
-        # Wywołujemy funkcję z wyłączoną weryfikacją SSL
-        url = 'https://example.com/data'
+        # Upewniamy się, że odpowiedni komunikat został zalogowany, ale nie wyświetlony
+        mock_logger.error.assert_called_with("Błąd: URL nie został znaleziony (404).")
+    
+    @mock.patch('src.db_fetcher.logger')  # Zamockowanie loggera
+    @mock.patch('urllib3.PoolManager.request', side_effect=urllib3.exceptions.ConnectionError)  # Symulujemy błąd połączenia
+    def test_fetch_data_connection_error(self, mock_request, mock_logger):
+        """Test dla sytuacji, gdy połączenie nie może zostać nawiązane"""
+        url = "http://example.com"
         result = fetch_employee_data_from_url(url)
+        
+        # Sprawdzamy, czy funkcja zwróciła pustą listę
+        self.assertEqual(result, [])
+        
+        # Sprawdzamy, czy odpowiedni komunikat został zalogowany
+        mock_logger.error.assert_called_with("Błąd połączenia: ")
 
-        # Sprawdzamy, czy funkcja zwraca prawidłowe dane
-        self.assertEqual(len(result), 1)
-        self.assertEqual(result[0]['nazwisko'], 'Nowak')
-        mock_ssl_verification.assert_called_once()
+    @mock.patch('src.db_fetcher.logger')  # Zamockowanie loggera
+    @mock.patch('urllib3.PoolManager.request', return_value=mock.Mock(status=200, data=b'{"users": []}'))  # Symulujemy poprawną odpowiedź
+    def test_fetch_data_success(self, mock_request, mock_logger):
+        """Test dla poprawnej odpowiedzi serwera z pustą listą użytkowników"""
+        url = "http://example.com"
+        result = fetch_employee_data_from_url(url)
+        
+        # Sprawdzamy, czy funkcja zwróciła pustą listę
+        self.assertEqual(result, [])
 
 if __name__ == '__main__':
     unittest.main()

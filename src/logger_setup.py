@@ -69,3 +69,10 @@ def close_log_handlers(logger):
         finally:
             handler.release()  # Zwalniamy uchwyt
             logger.removeHandler(handler)
+
+def reset_logger(logger):
+    """Resetuje logger, usuwając wszystkie uchwyty."""
+    for handler in logger.handlers[:]:
+        logger.removeHandler(handler)
+        handler.close()
+    logger.handlers = []  # Ustawia pustą listę uchwytów
