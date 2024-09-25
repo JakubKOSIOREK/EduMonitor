@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## [Unversioned] - 2024-09-25
+## [1.3.1] - 2024-09-25
 ### Dodano:
 - **Testy jednostkowe:**
     - Dodano kompleksowy zestaw testów jednostkowych dla modułów projektu, w tym:
