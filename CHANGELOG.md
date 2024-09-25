@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## [v1.3.2] - 2024-09-25
+### Naprawy i zmiany:
+- **Dodano nowe zmienne konfiguracyjne w pliku `config/config.ini`**:
+  - `HTML_LISTS` dla katalogu, w którym zapisywane są listy pracowników w formacie HTML.
+  - `HTML_REPORTS` dla katalogu, w którym zapisywane są raporty o stanie wyszkolenia pracowników w formacie HTML.
+- **Aktualizacja modułu `HTMLReportGenerator`**:
+  - Oddzielenie zapisywania list pracowników i raportów szkoleniowych do odpowiednich katalogów na podstawie zmiennych z pliku konfiguracyjnego.
+  - Listy pracowników są teraz zapisywane w katalogu `output/lists/`, a raporty w katalogu `output/reports/`.
+- **Aktualizacja testów**:
+  - Zaktualizowano testy w pliku `tests/test_HTMLReportGenerator.py`, aby uwzględniały nowe ścieżki katalogów dla list i raportów.
+  - Testy sprawdzają teraz poprawność generowania raportów i list HTML oraz poprawność ścieżek do plików.
+
 ## [1.3.1] - 2024-09-25
 ### Dodano:
 - **Testy jednostkowe:**
