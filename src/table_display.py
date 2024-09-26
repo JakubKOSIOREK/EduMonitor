@@ -15,11 +15,6 @@ class TableDisplay:
     def display_employees_table(self, employees, group_name, table_title):
         """
         Wyświetla tabelę pracowników w konsoli przy użyciu PrettyTable.
-        
-        Args:
-            employees (list): Lista pracowników do wyświetlenia.
-            group_name (str): Nazwa grupy pracowników (np. Kadra Zarządzająca).
-            table_title (str): Tytuł tabeli.
         """
         if not employees:
             logger.info(f"Brak pracowników w grupie {group_name} - {table_title}.")
@@ -42,10 +37,10 @@ class TableDisplay:
             table.add_row([
                 employee.nazwisko,
                 employee.imie,
-                employee.jednostka,
+                employee.jednostka_organizacyjna,
                 employee.nazwa_szkolenia,
                 employee.data_szkolenia.strftime("%d.%m.%Y"),
-                employee.wazne_do.strftime("%d.%m.%Y")
+                employee.data_waznosci.strftime("%d.%m.%Y")
             ])
 
         print(table)
@@ -67,11 +62,6 @@ class TableDisplay:
     def display_all_groups(self, kadra_zarzadcza, kadra_kierownicza, pracownicy):
         """
         Wyświetla tabele dla wszystkich grup zawodowych.
-        
-        Args:
-            kadra_zarzadcza (list): Lista pracowników w kadrze zarządzającej.
-            kadra_kierownicza (list): Lista pracowników w kadrze kierowniczej.
-            pracownicy (list): Lista pozostałych pracowników.
         """
         if kadra_zarzadcza:
             self.display_group_tables(kadra_zarzadcza, "Kadra Zarządzająca")
