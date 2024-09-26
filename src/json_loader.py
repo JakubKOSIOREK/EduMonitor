@@ -3,6 +3,7 @@
 import os
 import json
 from datetime import datetime
+from src.config_loader import ConfigLoader
 from src.logger_setup import setup_logger
 
 class JSONLoader:
@@ -12,6 +13,8 @@ class JSONLoader:
 
     def __init__(self):
         self.logger = setup_logger()
+        self.config_loader = ConfigLoader()
+        self.date_format = self.config_loader.get_date_format()
 
     def convert_to_json_structure(self, filtered_data):
         """
@@ -46,7 +49,7 @@ class JSONLoader:
         os.makedirs(input_dir, exist_ok=True)
 
         # Generowanie nazwy pliku JSON z timestamp
-        timestamp = datetime.now().strftime("%d-%m-%Y")
+        timestamp = datetime.now().strftime(self.date_format)
         json_filename = f"ukonczone_szkolenia-{timestamp}.json"
         json_output_path = os.path.join(input_dir, json_filename)
 
