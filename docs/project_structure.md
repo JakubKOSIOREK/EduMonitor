@@ -10,6 +10,7 @@ edumonitor/
 |   ├── data_flow.pdf
 |   ├── project_structure.md    # Struktura projektu
 |   └── project_structure.pdf
+├── input/
 ├── logs/
 ├── outputs/
 |   ├── lists/
