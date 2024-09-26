@@ -1,5 +1,36 @@
 # CHANGELOG
 
+## [Undefined] - 2024-09-26
+### Nowości:
+- **Dodano flagę --csv** umożliwiającą podanie pliku CSV z zewnętrznego źródła przez linię komend.
+    - Program odczytuje podany plik CSV, konwertuje jego zawartość do formatu JSON i zapisuje wynikowy plik JSON w katalogu `input/`.
+    - Plik JSON jest tworzony z nazwą w formacie `ukonczone_szkolenia_<timestamp>.json`, gdzie `<timestamp>` to aktualna data.
+- **Dodano flagę --shell** umożliwiającą wyświetlanie wyników w konsoli w postaci tabeli.
+    - Program wyświetla dane pracowników podzielone na grupy zawodowe (kadra zarządzająca, kadra kierownicza, pracownicy).
+    - Tabela zawiera informacje o pracownikach z aktualnym, wygasającym i już wygasłym szkoleniem.
+
+### Ulepszenia:
+- **Integracja danych z URL**:
+    - Program pobiera dane o pracownikach z zewnętrznej bazy danych (URL skonfigurowany w pliku `config.ini`), a następnie porównuje je z danymi z CSV.
+    - Do wynikowego pliku JSON dodano pola `db_url`, `stanowisko` oraz `email`, które uzupełniają informacje o pracowniku na podstawie danych z URL.
+- **Automatyczne uzupełnianie danych o pracownikach**:
+    - Jeśli dany pracownik znajduje się w bazie danych (URL), do jego rekordu w JSON dodawane są pola `stanowisko` oraz `email`.
+    - Dodano flagę `db_url = True/False`, informującą o tym, czy pracownik istnieje w bazie URL.
+- **Zoptymalizowano zarządzanie danymi pracowników**:
+    - Użycie klasy `Employee` do reprezentacji danych o pracownikach oraz porównywania ich z bazą URL.
+    - Automatyczne sortowanie plików JSON według daty, co umożliwia zawsze wyświetlanie najnowszego pliku z wynikami.
+
+### Poprawki:
+- **Obsługa wyjątków**:
+    - Poprawiono obsługę błędów przy ładowaniu danych z pliku JSON (np. błędne argumenty w funkcji `Employee`).
+    - Dodano lepsze logowanie i obsługę błędów HTTP oraz wyjątków podczas pobierania danych z URL.
+- **Poprawki związane z filtrowaniem pracowników**:
+    - Ulepszono filtrację pracowników według grup zawodowych, uwzględniając pola `stanowisko` i `email` pobrane z bazy URL.
+
+### Dokumentacja:
+- Zaktualizowano dokumentację, aby odzwierciedlała nową funkcjonalność flag `--csv` oraz `--shell`.
+- Opisano sposób działania programu, w tym proces odczytywania pliku CSV, konwersji do JSON oraz porównania danych z bazą URL.
+
 ## [v1.4.0] - 2024-09-25
 ### Nowości:
 - **Dodano nowe zmienne konfiguracyjne** w pliku `config/config.ini`:

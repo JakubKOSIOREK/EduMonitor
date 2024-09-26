@@ -1,11 +1,6 @@
 """ src/csv_loader.py """
 
 import csv
-import re
-from datetime import datetime
-from src.employee import Employee
-from src.config_loader import ConfigLoader
-from src.utility.logging_decorator import log_exceptions
 from src.logger_setup import setup_logger
 logger = setup_logger()
 
