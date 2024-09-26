@@ -76,15 +76,10 @@ class HTMLReportGenerator:
         manager = EmployeeManager(employees, [])
         kadra_zarzadcza, kadra_kierownicza, pracownicy = manager.filter_by_position()
 
-        # Liczenie pracowników w każdej grupie
-        def group_summary(group):
-            valid, soon_expiring, expired = self._get_training_summary(group)
-            return {
-                "valid": len(valid),
-                "soon_expiring": len(soon_expiring),
-                "expired": len(expired)
-            }
-        
+        kadra_zarzadcza_count = len(kadra_zarzadcza)
+        kadra_kierownicza_count = len(kadra_kierownicza)
+        pracownicy_count = len(pracownicy)
+
         kadra_zarzadcza_summary = group_summary(kadra_zarzadcza)
         kadra_kierownicza_summary = group_summary(kadra_kierownicza)
         pracownicy_summary = group_summary(pracownicy)
@@ -103,7 +98,11 @@ class HTMLReportGenerator:
             company_name = company_name,
             kadra_zarzadcza_summary = kadra_zarzadcza_summary,
             kadra_kierownicza_summary = kadra_kierownicza_summary,
-            pracownicy_summary = pracownicy_summary
+            błąd-w-porównywaniu-pracowniów-csv-z-url
+            pracownicy_summary = pracownicy_summary,
+            kadra_zarzadcza_count = kadra_zarzadcza_count,
+            kadra_kierownicza_count = kadra_kierownicza_count,
+            pracownicy_count = pracownicy_count
         )
 
         with open(file_path, 'w', encoding='utf-8') as f:

@@ -39,6 +39,8 @@ def fetch_employee_data_from_url(url):
         if response.status == 200:
             raw_data = json.loads(response.data.decode('utf-8'))
             clean_data = raw_data.get("users", [])  # Wyciągamy dane pracowników
+            for user in clean_data:
+                logger.debug(user)
             logger.info(f"Pobrano {len(clean_data)} rekordów pracowników z bazy danych.")
             return clean_data
         elif response.status == 404:
