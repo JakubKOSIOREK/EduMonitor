@@ -1,6 +1,12 @@
 # CHANGELOG
 
-## [Undefined] - 2024-09-26
+## [Undefined] - 2024-09-26 no.2
+### Zmiany:
+- **Przeniesienie logiki przetwarzania argumentu CSV**: Funkcja odpowiedzialna za walidację i przetwarzanie pliku CSV została przeniesiona z `edumonitor.py` do modułu `arg_parser.py`. 
+   - Nowa funkcja `process_csv_argument()` w `arg_parser.py` zajmuje się wczytywaniem, filtrowaniem oraz walidacją pliku CSV.
+   - Uproszczenie głównej funkcji `main()` w `edumonitor.py`, co poprawia czytelność i modularność kodu.
+
+## [Undefined] - 2024-09-26 no.1
 ### Nowości:
 - **Dodano flagę --csv** umożliwiającą podanie pliku CSV z zewnętrznego źródła przez linię komend.
     - Program odczytuje podany plik CSV, konwertuje jego zawartość do formatu JSON i zapisuje wynikowy plik JSON w katalogu `input/`.
