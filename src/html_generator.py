@@ -76,6 +76,10 @@ class HTMLReportGenerator:
         manager = EmployeeManager(employees, [])
         kadra_zarzadcza, kadra_kierownicza, pracownicy = manager.filter_by_position()
 
+        kadra_zarzadcza_count = len(kadra_zarzadcza)
+        kadra_kierownicza_count = len(kadra_kierownicza)
+        pracownicy_count = len(pracownicy)
+
         # Liczenie pracowników w każdej grupie
         def group_summary(group):
             valid, soon_expiring, expired = self._get_training_summary(group)
@@ -103,7 +107,10 @@ class HTMLReportGenerator:
             company_name = company_name,
             kadra_zarzadcza_summary = kadra_zarzadcza_summary,
             kadra_kierownicza_summary = kadra_kierownicza_summary,
-            pracownicy_summary = pracownicy_summary
+            pracownicy_summary = pracownicy_summary,
+            kadra_zarzadcza_count = kadra_zarzadcza_count,
+            kadra_kierownicza_count = kadra_kierownicza_count,
+            pracownicy_count = pracownicy_count
         )
 
         with open(file_path, 'w', encoding='utf-8') as f:
