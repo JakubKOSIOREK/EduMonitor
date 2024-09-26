@@ -3,6 +3,12 @@
 ## Opis projektu
 EduMonitor to narzędzie do monitorowania szkoleń pracowników, które umożliwia przetwarzanie danych z plików CSV, porównywanie ich z danymi pobranymi z zewnętrznego URL oraz wyświetlanie wyników w konsoli w formie tabel. Program obsługuje również generowanie raportów i list pracowników w formacie HTML, dotyczących szkoleń, które wkrótce wygasną lub już wygasły.
 
+Dodatkowo program umożliwia generowanie osobnych list w formacie HTML dla różnych grup zawodowych, takich jak:
+
+- Kadra zarządzająca
+- Kadra kierownicza
+- Pracownicy
+
 ## Wymagania
 - Python 3.10 lub nowszy
 - `prettytable` (instalacja: `pip install prettytable`)
@@ -26,16 +32,29 @@ Program można uruchomić, używając flagi `--csv` . Aby wyniki były wyświetl
 ## Flagi i opcje
 - `--csv <ścieżka do pliku>`: Wczytuje dane z pliku CSV, przetwarza je oraz porównuje z danymi z bazy URL. Dane po przetworzeniu są zapisywane do pliku JSON w katalogu `input/`.
 - `--shell`: Wyświetla dane w konsoli w formie tabeli, po przetworzeniu pliku CSV i porównaniu z danymi z bazy URL.
+- `--generate-training-lists`: Generuje osobne listy w formacie HTML dla różnych grup zawodowych (kadra zarządzająca, kadra kierownicza, pracownicy), zapisując je w katalogu `output/lists/`.
 - `-h / --help`: Wyświetla pomoc dotyczącą dostępnych opcji.
 
 ## Funkcjonalności
 - **Wczytywanie i porównanie danych**: Program wczytuje pliki CSV zawierające informacje o pracownikach i ich szkoleniach, a następnie zapisuje te dane do formatu JSON. W trakcie przetwarzania, dane pracowników są automatycznie porównywane z danymi pobranymi z zewnętrznego URL, co umożliwia uzupełnienie informacji o stanowisku i adresie email pracownika, jeśli są one dostępne w bazie URL.
 - **Generowanie tabel**: Program generuje tabele z podziałem na grupy zawodowe (kadra zarządzająca, kadra kierownicza, pracownicy) oraz wyświetla pracowników z aktualnym, wygasającym i już wygasłym szkoleniem, jeśli użyto flagi `--shell`.
+- **Generowanie list w formacie HTML**: Program generuje osobne listy w formacie HTML dla trzech grup zawodowych:
+   - Kadra zarządzająca
+   - Kadra kierownicza
+   - Pracownicy
+   
+   Listy są zapisywane w katalogu output/lists/.
 
 ## Przykład działania
-Po uruchomieniu programu:
+
+1. Konwersja danych z pliku CSV:
    ```python
    python3 edumonitor.py --csv <ścieżka do pliku CSV> --shell
+   ```
+
+2. Wyświetlanie danych w konsoli:
+   ```python
+   python3 edumonitor.py --shell
    ```
 
    ```sql
@@ -46,6 +65,17 @@ Po uruchomieniu programu:
    | WAYNE        | BRUCE    |   DC  | Security awareness | 26.06.2023     | 24.06.2024 |
    +--------------+----------+-------+--------------------+----------------+------------+
    ```
+
+3. Generowanie list pracowników w formacie HTML:
+   ```python
+   python3 edumonitor.py --generate-training-lists
+   ```
+
+   Po uruchomieniu polecenia program wygeneruje trzy osobne listy:
+
+   - kadra_zarzadzajaca_lista.html
+   - kadra_kierownicza_lista.html
+   - pracownicy_lista.html
 
 ## Plik konfiguracyjny
 W projekcie znajduje się przykładowy plik konfiguracyjny `config/config_example.ini`. Skopiuj ten plik, zmień nazwę na `config.ini`, a następnie dostosuj go do swoich potrzeb, wprowadzając odpowiednie ścieżki oraz URL do pobierania danych:

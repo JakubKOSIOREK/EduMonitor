@@ -28,6 +28,13 @@
     - Jeżeli program zostanie uruchomiony z flagą `--shell`, moduł `table_display.py` wyświetla wyniki w formie tabeli w konsoli.
     - Pracownicy są grupowani na kadry zarządzające, kierownicze oraz pozostałych, a każda grupa jest podzielona według statusu ważności szkolenia: aktualne, zbliżające się do wygaśnięcia, przeterminowane.
 
+6. **Wyświetlanie wyników w konsoli (opcjonalne):**
+    - Jeżeli program zostanie uruchomiony z flagą `--generate-training-lists`, moduł html_list_generator.py generuje osobne listy w formacie HTML dla każdej grupy zawodowej:
+      - Kadra Zarządzająca
+      - Kadra Kierownicza
+      - Pracownicy
+      > Listy są zapisywane w katalogu `output/lists/`.
+
 ## Moduły w projekcie
 
 ### 1. `csv_loader.py`
@@ -70,17 +77,23 @@
   - Grupuje pracowników według stanowisk oraz statusu ważności szkolenia.
   - Wyświetla dane w formie tabeli, uwzględniając dodatkowe informacje o pracowniku, takie jak `stanowisko` i `email`, jeśli dane te są dostępne z bazy URL.
 
-### 7. `logger_setup.py`
+### 7. `html_list_generator.py`
+- **Opis**: Moduł odpowiedzialny za generowanie list pracowników w formacie HTML.
+- **Funkcjonalności**:
+  - Generuje osobne listy dla różnych grup zawodowych (kadra zarządzająca, kadra kierownicza, pracownicy).
+  - Listy są zapisywane w katalogu `output/lists/`.
+
+### 8. `logger_setup.py`
 - **Opis**: Moduł odpowiedzialny za konfigurację loggera.
 - **Funkcjonalności**:
   - Umożliwia logowanie informacji, ostrzeżeń oraz błędów do pliku i konsoli.
   - Logi są zapisywane w pliku z timestampem, co ułatwia analizę działania programu.
   - Podczas testów logger może być mockowany, aby wyciszyć zbędne komunikaty.
 
-### 8. `arg_parser.py`
+### 9. `arg_parser.py`
 - **Opis**: Moduł odpowiedzialny za obsługę argumentów z linii komend.
 - **Funkcjonalności**:
-  - Umożliwia uruchomienie programu z flagami `--csv`, `--shell`, `--lists-html`, oraz `--report-html`, co pozwala na różne tryby pracy programu.
+  - Umożliwia uruchomienie programu z flagami `--csv`, `--shell`, `--generate-training-lists`, co pozwala na różne tryby pracy programu.
   - Obsługuje argumenty dla ścieżki do pliku CSV oraz wyświetlania danych w konsoli w formie tabeli.
 
 ## Przykładowy przepływ danych
@@ -104,3 +117,7 @@
 
 4. **Wyświetlenie wyników w konsoli**:
     - Jeśli użyto flagi `--shell`, dane są wyświetlane w formie tabeli z dodatkowymi informacjami o pracownikach, takimi jak `stanowisko`, `email` oraz flaga `db_url`, wskazująca, czy pracownik został znaleziony w bazie URL.
+
+5. **Generowanie list pracowników w formacie HTML:**:
+    - Jeśli użyto flagi `--generate-training-lists`, generowane są osobne listy dla kadry zarządzającej, kadry kierowniczej oraz pracowników, zapisywane w katalogu `output/lists/`.
+    

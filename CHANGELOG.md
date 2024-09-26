@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## [Undefined] - 2024-09-26 no.3
+### Dodane
+- Dodano nową funkcjonalność generowania list w formacie HTML dla różnych grup zawodowych:
+  - Kadra zarządzająca
+  - Kadra kierownicza
+  - Pracownicy
+- Nowa metoda `generate_lists_for_all_groups` w klasie `HTMLListGenerator`, która automatycznie generuje osobne listy dla każdej grupy zawodowej.
+- Zaktualizowano flagę `--generate-training-lists`, aby umożliwiała generowanie osobnych plików HTML dla każdej grupy.
+- Rozdzielono logikę generowania list od głównej funkcji, przenosząc ją do klasy `HTMLListGenerator` w celu lepszej organizacji kodu.
+
+### Zmodyfikowane
+- Uproszczono logikę w pliku `edumonitor.py`, która teraz korzysta z nowej metody `generate_lists_for_all_groups` do generowania list pracowników.
+
+### Naprawione
+- Poprawiono logikę obsługi flag, aby można było łączyć flagi `--csv` z `--shell` lub `--generate-training-lists` w jednym uruchomieniu programu.
+
 ## [Undefined] - 2024-09-26 no.2
 ### Zmiany:
 - **Przeniesienie logiki przetwarzania argumentu CSV**: Funkcja odpowiedzialna za walidację i przetwarzanie pliku CSV została przeniesiona z `edumonitor.py` do modułu `arg_parser.py`. 
