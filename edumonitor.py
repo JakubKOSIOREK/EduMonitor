@@ -1,79 +1,107 @@
 """ edumonitor.py """
 
 import os
-import argparse
-from src.csv_loader import CSVLoader
-from src.db_fetcher import fetch_employee_data_from_url
-from src.config_loader import ConfigLoader
+import json
 from src.logger_setup import setup_logger
-from src.table_display import TableDisplay
-from src.html_generator import HTMLReportGenerator
-from src.employee_management import EmployeeManager
-
+from src.arg_parser import get_arguments
+from src.csv_loader import CSVLoader
+from src.config_loader import ConfigLoader
+from src.utility.validation import validate_date_format
 
 def main():
+    # Ustawienia loggera
     logger = setup_logger()
     logger.info("Program EduMonitor został uruchomiony.")
 
-    parser = argparse.ArgumentParser(description='EduMonitor - wczytaj plik CSV i wyświetl dane.')
-    parser.add_argument('--csv', type=str, help='Ścieżka do pliku CSV')
-    parser.add_argument('--test-csv', action='store_true', help='Użycie testowego pliku CSV z katalogu tests/test_files/')
-    parser.add_argument('--shell', action='store_true', help='Wyświetlenie wyników w konsoli (tabele)')
-    parser.add_argument('--lists-html', action='store_true', help='Generowanie list pracowników w formacie HTML')
-    parser.add_argument('--report-html', action='store_true', help='Generowanie raportu o stanie wyszkolenia w formacie HTML')
-    args = parser.parse_args()
+    # Wczytanie argumentów z linii komend
+    args = get_arguments()
 
-    if args.test_csv:
-        test_csv_path = os.path.join('tests', 'test_files', 'dane_testowe.csv')
-        if not os.path.exists(test_csv_path):
-            logger.error(f"Błąd: Plik testowy {test_csv_path} nie istnieje.")
-            return
-        csv_path = test_csv_path
-        logger.info(f"Użycie testowego pliku CSV: {csv_path}")
-    elif args.csv:
+    if args.csv:
         csv_path = args.csv
-    else:
-        logger.error("Błąd: Musisz podać ścieżkę do pliku CSV lub użyć flagi --test-csv.")
-        return
+        if not os.path.exists(csv_path):
+            logger.error(f"Błąd: Plik CSV {csv_path} nie istnieje.")
+            return
 
-    # Użycie ConfigLoader do wczytania konfiguracji
-    config_loader = ConfigLoader()
-    url = config_loader.get_database_url()
-    if not url:
-        logger.error("Błąd: Nie znaleziono URL w pliku konfiguracyjnym.")
-        return
+        # Wczytanie i filtrowanie pliku CSV (13 kolumn oczekiwanych)
+        loader = CSVLoader(csv_path, expected_columns=13)
+        filtered_data = loader.load_and_filter_data()
 
-    # Wczytanie i przetworzenie pliku CSV
-    csv_loader = CSVLoader()
-    raw_data = csv_loader.load_file_stream(csv_path)
-    employees_csv = csv_loader.filter_file(raw_data)
-    employees_db = fetch_employee_data_from_url(url)
+        # Walidacja danych po przefiltrowaniu, przed zapisem do JSON
+        if filtered_data and validate_csv_row_data(filtered_data):
+            json_data = convert_to_json_structure(filtered_data)
+            json_filename = os.path.basename(csv_path).replace('.csv', '.json')
+            save_to_json(json_filename, json_data)
+        else:
+            logger.error("Błąd walidacji danych. Plik nie został zapisany.")
 
-    # Użycie klasy EmployeeManager do zarządzania pracownikami
-    manager = EmployeeManager(employees_csv, employees_db)
-    updated_employees = manager.check_employee_in_db()
+    logger.info("Program EduMonitor zakończył działanie.")
 
-    # Filtracja pracowników według stanowiska
-    kadra_zarzadcza, kadra_kierownicza, pracownicy = manager.filter_by_position()
+def convert_to_json_structure(filtered_data):
+    """
+    Funkcja konwertuje przefiltrowane dane CSV do pożądanej struktury JSON.
 
-    # Wyświetlanie wyników w konsoli
-    table_display = TableDisplay()
-    if args.shell:
-        table_display.display_all_groups(kadra_zarzadcza, kadra_kierownicza, pracownicy)
+    Zwraca listę słowników z odpowiednimi kluczami dla kolumn CSV.
+    """
+    json_data = []
+    for row in filtered_data:
+        json_data.append({
+            "nazwisko": row[1],                 # Kolumna 2
+            "imie": row[2],                     # Kolumna 3
+            "kod": row[3],                      # Kolumna 4
+            "jednostka_organizacyjna": row[4],  # Kolumna 5
+            "nazwa_szkolenia": row[7],          # Kolumna 8
+            "okres": row[8],                    # Kolumna 9
+            "ocena": row[9],                    # Kolumna 10
+            "uwagi": row[10]                    # Kolumna 11
+        })
+    return json_data
 
-    # Generowanie HTML
-    html_generator = HTMLReportGenerator()
+def validate_csv_row_data(data):
+    """
+    Funkcja waliduje dane wierszy CSV przed zapisem do JSON.
+    Sprawdza, czy kluczowe pola są niepuste i mają odpowiednie formaty.
+    """
+    logger = setup_logger()
+    for entry in data:
+        # Sprawdzenie, czy pola 'nazwisko' i 'imie' nie są puste
+        if not entry[1].strip() or not entry[2].strip():
+            logger.error(f"Błąd walidacji: Brak nazwiska lub imienia w danych {entry}")
+            return False
 
-    if args.lists_html:
-        html_generator.generate_employee_list("Kadra Zarządzająca", kadra_zarzadcza)
-        html_generator.generate_employee_list("Kadra Kierownicza", kadra_kierownicza)
-        html_generator.generate_employee_list("Pracownicy", pracownicy)
+        # Sprawdzenie formatu daty w polu 'okres'
+        if entry[8]:
+            try:
+                # Rozdzielenie okresu na dwie daty
+                start_date, end_date = entry[8].split("...")
+                
+                # Sprawdzenie formatu każdej daty
+                if not validate_date_format(start_date.strip()) or not validate_date_format(end_date.strip()):
+                    logger.error(f"Błąd walidacji: Nieprawidłowy format daty w polu 'okres' dla danych {entry}")
+                    return False
+            except (ValueError, IndexError):
+                logger.error(f"Błąd walidacji: Nieprawidłowy format daty w polu 'okres' dla danych {entry}")
+                return False
 
-    if args.report_html:
-        html_generator.generate_training_report(employees_csv)
+    logger.info("Dane zostały zwalidowane poprawnie.")
+    return True
 
-    logger.info("Program EduMonitor został zakończony.")
+def save_to_json(json_filename, data):
+    """Funkcja zapisuje przefiltrowane dane do pliku JSON w katalogu input/."""
+    logger = setup_logger()
 
+    # Tworzenie katalogu input/ jeśli nie istnieje
+    input_dir = os.path.join(os.getcwd(), 'input')
+    os.makedirs(input_dir, exist_ok=True)
+
+    # Generowanie pełnej ścieżki do pliku JSON w katalogu input/
+    json_output_path = os.path.join(input_dir, json_filename)
+
+    try:
+        with open(json_output_path, mode='w', encoding='utf-8') as json_file:
+            json.dump(data, json_file, ensure_ascii=False, indent=4)
+        logger.info(f"Plik CSV został zapisany jako JSON w: {json_output_path}")
+    except Exception as e:
+        logger.error(f"Wystąpił błąd podczas zapisu do JSON: {e}")
 
 if __name__ == '__main__':
     main()
