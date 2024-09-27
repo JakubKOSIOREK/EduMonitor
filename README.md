@@ -33,6 +33,7 @@ Program można uruchomić, używając flagi `--csv` . Aby wyniki były wyświetl
 - `--csv <ścieżka do pliku>`: Wczytuje dane z pliku CSV, przetwarza je oraz porównuje z danymi z bazy URL. Dane po przetworzeniu są zapisywane do pliku JSON w katalogu `input/`.
 - `--shell`: Wyświetla dane w konsoli w formie tabeli, po przetworzeniu pliku CSV i porównaniu z danymi z bazy URL.
 - `--generate-training-lists`: Generuje osobne listy w formacie HTML dla różnych grup zawodowych (kadra zarządzająca, kadra kierownicza, pracownicy), zapisując je w katalogu `output/lists/`.
+- `--generate-training-report`: Generuje raport o stanie wyszkolenia pracowników w formacie HTML, zawierający podsumowanie liczby pracowników z ważnymi, wygasającymi i przeterminowanymi szkoleniami. Raport jest zapisywany w katalogu `output/reports/`.
 - `-h / --help`: Wyświetla pomoc dotyczącą dostępnych opcji.
 
 ## Funkcjonalności
@@ -43,7 +44,9 @@ Program można uruchomić, używając flagi `--csv` . Aby wyniki były wyświetl
    - Kadra kierownicza
    - Pracownicy
    
-   Listy są zapisywane w katalogu output/lists/.
+   Listy są zapisywane w katalogu `output/lists/`.
+
+- **Generowanie raportu o stanie wyszkolenia pracowników**: Program generuje raport HTML zawierający liczbę pracowników z ważnymi, wygasającymi oraz przeterminowanymi szkoleniami, podzieloną na trzy grupy: kadra zarządzająca, kadra kierownicza, pracownicy. Raport jest zapisywany w katalogu `output/reports/`.
 
 ## Przykład działania
 
@@ -76,6 +79,12 @@ Program można uruchomić, używając flagi `--csv` . Aby wyniki były wyświetl
    - kadra_zarzadzajaca_lista.html
    - kadra_kierownicza_lista.html
    - pracownicy_lista.html
+
+4. Generowanie raportu o stanie wyszkolenia pracowników:
+   ```python
+   python3 edumonitor.py --generate-training-report
+   ```
+   Po uruchomieniu polecenia raport zostanie zapisany w katalogu `output/reports/` pod nazwą `raport_wyszkolenia_<data>.html`.
 
 ## Plik konfiguracyjny
 W projekcie znajduje się przykładowy plik konfiguracyjny `config/config_example.ini`. Skopiuj ten plik, zmień nazwę na `config.ini`, a następnie dostosuj go do swoich potrzeb, wprowadzając odpowiednie ścieżki oraz URL do pobierania danych:

@@ -24,8 +24,8 @@ edumonitor/
 |   ├── db_fetcher.py
 |   ├── employee_management.py
 |   ├── employee.py
-|   ├── html_generator.py
 |   ├── html_list_generator.py
+|   ├── html_report_generator.py
 |   ├── json_loader.py
 |   ├── logger_setup.py
 |   └── table_display.py

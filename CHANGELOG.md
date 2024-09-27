@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## [Undefined] - 2024-09-27 no.4
+### Nowości:
+- Dodano nową funkcjonalność generowania raportu o stanie wyszkolenia pracowników w formacie HTML.
+  - Raport zawiera szczegółowe informacje na temat liczby pracowników z ważnymi, wygasającymi oraz przeterminowanymi szkoleniami.
+  - Raport dzieli pracowników na trzy grupy zawodowe: kadra zarządzająca, kadra kierownicza oraz pracownicy.
+  - Raport jest zapisywany w katalogu `output/reports/` z nazwą zawierającą datę generowania raportu.
+
+### Zmodyfikowane
+- Zaktualizowano dokumentację projektu, dodając sekcję o generowaniu raportu przy użyciu flagi `--generate-training-report`.
+
+### Naprawione
+- Poprawiono proces przetwarzania danych szkoleniowych, aby prawidłowo wyświetlać liczbę pracowników z ważnymi, wygasającymi i przeterminowanymi szkoleniami w raportach HTML.
+
 ## [Undefined] - 2024-09-26 no.3
 ### Dodane
 - Dodano nową funkcjonalność generowania list w formacie HTML dla różnych grup zawodowych:
