@@ -1,84 +1,60 @@
 """ src/csv_loader.py """
 
 import csv
-import re
-from datetime import datetime
-from src.employee import Employee
-from src.config_loader import ConfigLoader
-from src.utility.logging_decorator import log_exceptions
 from src.logger_setup import setup_logger
 logger = setup_logger()
 
+import csv
+import logging
+
 class CSVLoader:
-    """Loader do wczytywania i filtrowania plików CSV."""
+    """Klasa do wczytywania i filtrowania danych z pliku CSV."""
 
-    @log_exceptions(logger)
-    def __init__(self, date_format=None):
-        self.config_loader = ConfigLoader()
-        self.date_format = date_format or self.config_loader.get_date_format()
+    def __init__(self, csv_path, expected_columns=13, encoding='cp1250'):
+        self.csv_path = csv_path
+        self.expected_columns = expected_columns  # Oczekiwana liczba kolumn
+        self.encoding = encoding
+        self.logger = logging.getLogger('EduMonitor')
 
-    def load_file_stream(self, csv_file):
-        logger.info(f"Rozpoczęto strumieniowe wczytywanie pliku CSV: {csv_file}")
+    def load_and_filter_data(self):
+        """
+        Wczytuje dane z pliku CSV i filtruje je.
+        Zwraca listę przefiltrowanych wierszy.
+        """
+        filtered_data = []
         try:
-            with open(csv_file, mode='r', encoding='cp1250') as file:
-                for row in csv.reader(file, delimiter=';'):
-                    if len(row) > 1 and row[0].isdigit():  # Sprawdzamy, czy wiersz zaczyna się od numeru wiersza
-                        yield row
-        except FileNotFoundError:
-            logger.error(f"Plik {csv_file} nie został znaleziony.")  # Ten logger musi być wywoływany
+            with open(self.csv_path, mode='r', encoding=self.encoding) as csv_file:
+                csv_reader = csv.reader(csv_file, delimiter=';')
+                for row in csv_reader:
+                    # Filtrowanie danych: sprawdzamy, czy wiersz jest poprawny
+                    if self.is_valid_row(row):
+                        logger.debug(f"Wiersz z CSV: {row}")
+                        filtered_data.append(row)
+                    else:
+                        self.logger.warning(f"Pominięto wiersz: {row}")
+            return filtered_data
         except Exception as e:
-            logger.error(f"Błąd podczas otwierania pliku {csv_file}: {e}")
+            self.logger.error(f"Błąd podczas wczytywania pliku CSV: {e}")
+            return []
 
-    def filter_file(self, raw_data):
-        employees = []
-        rejected_rows = 0
+    def is_valid_row(self, row):
+        """
+        Sprawdza, czy wiersz jest poprawny.
+        Pomijamy wiersze, w których:
+        - Pierwsza kolumna jest pusta LUB zawiera 'Lp.'.
+        - Kolumny 2 (Nazwisko) i 3 (Imię) są puste ORAZ dwie ostatnie kolumny są puste.
+        """
+        # Sprawdzamy, czy liczba kolumn w wierszu jest zgodna z oczekiwaną
+        if len(row) != self.expected_columns:
+            self.logger.warning(f"Niepoprawna liczba kolumn: {len(row)} zamiast {self.expected_columns}. Wiersz: {row}")
+            return False
 
-        # Wzorzec do sprawdzania poprawności daty (przykładowy regex do dat w formacie dd.mm.yyyy)
-        date_pattern = re.compile(r"\d{2}\.\d{2}\.\d{4}")
+        # Pomijamy wiersze, w których pierwsza kolumna jest pusta lub zawiera 'Lp.'
+        if not row[0].strip() or row[0].strip().lower() == 'lp.':
+            return False
 
-        for i, row in enumerate(raw_data):
-            if i < 7:  # Pomijanie nagłówków
-                logger.debug(f"Pomijanie nagłówka: {row}")
-                continue
-            try:
-                # Weryfikacja wiersza, czy spełnia minimalne wymagania
-                if len(row) <= 7 or row[1] == '' or not date_pattern.match(row[8]):
-                    logger.warning(f"Niepoprawny wiersz, zbyt mało kolumn, brak nazwiska lub błędny format daty: {row}")
-                    continue
+        # Pomijamy wiersze, w których kolumny 2 i 3 są puste oraz dwie ostatnie kolumny są puste
+        if (not row[1].strip() or not row[2].strip()) and (not row[-1].strip() and not row[-2].strip()):
+            return False
 
-                # Odczytywanie i walidowanie dat
-                nazwisko = row[1]
-                imie = row[2]
-                jednostka = row[4]
-                nazwa_szkolenia = row[7]
-                okres_szkolenia = row[8]
-
-                # Walidacja i rozdzielenie zakresu dat
-                daty = okres_szkolenia.split('...')
-                if len(daty) != 2 or not date_pattern.match(daty[0].strip()) or not date_pattern.match(daty[1].strip()):
-                    #logger.error(f"Błędny format okresu szkolenia dla {nazwisko}, {imie}: {okres_szkolenia}")
-                    raise ValueError(f"Błędny format okresu szkolenia dla {nazwisko}, {imie}: {okres_szkolenia}")
-
-                # Parsowanie dat
-                data_szkolenia = datetime.strptime(daty[0].strip(), self.date_format)
-                wazne_do = datetime.strptime(daty[1].strip(), self.date_format)
-
-                employee = Employee(nazwisko, imie, jednostka, nazwa_szkolenia, data_szkolenia, wazne_do)
-                employees.append(employee)
-
-            except ValueError as e:
-                logger.error(f"Błąd formatu daty dla {nazwisko}, {imie}: {e}")
-                rejected_rows += 1
-
-        logger.info(f"Zakończono filtrowanie danych. Wczytano {len(employees)} poprawnych pracowników, odrzucono {rejected_rows} wierszy.")
-        return employees
-
-    def _parse_training_dates(self, okres_szkolenia):
-        """Wydobywa daty z okresu szkolenia i waliduje format."""
-        daty = okres_szkolenia.split('...')
-        if len(daty) != 2:
-            raise ValueError(f"Błędny format okresu szkolenia: {okres_szkolenia}")
-
-        data_szkolenia = datetime.strptime(daty[0].strip(), self.date_format)
-        wazne_do = datetime.strptime(daty[1].strip(), self.date_format)
-        return data_szkolenia, wazne_do
+        return True
