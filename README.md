@@ -22,10 +22,11 @@ Dodatkowo program umożliwia generowanie osobnych list w formacie HTML dla róż
    ```
 
 ## Uruchamianie
-Program można uruchomić, używając flagi `--csv` . Aby wyniki były wyświetlane w konsoli w formie tabeli, należy dodatkowo użyć flagi `--shell`:
+Program można uruchomić, używając flagi `--csv`, która wczytuje dane z pliku CSV i przetwarza je. Aby dodatkowo wyświetlić wyniki w konsoli w formie tabeli, należy użyć flagi `--shell`. Przykłady użycia:
    ```python
    python3 edumonitor.py --csv <ścieżka do pliku CSV>
    python3 edumonitor.py --csv <ścieżka do pliku CSV> --shell
+   python3 edumonitor.py --shell
    ```
 
 ## Flagi i opcje
