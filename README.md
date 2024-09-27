@@ -25,7 +25,6 @@ Dodatkowo program umożliwia generowanie osobnych list w formacie HTML dla róż
 Program można uruchomić, używając flagi `--csv` . Aby wyniki były wyświetlane w konsoli w formie tabeli, należy dodatkowo użyć flagi `--shell`:
    ```python
    python3 edumonitor.py --csv <ścieżka do pliku CSV>
-   python3 edumonitor.py --test-csv --shell
    python3 edumonitor.py --csv <ścieżka do pliku CSV> --shell
    ```
 
