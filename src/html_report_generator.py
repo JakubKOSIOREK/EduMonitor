@@ -45,6 +45,20 @@ class HTMLReportGenerator:
         manager = EmployeeManager(employees, [])
         kadra_zarzadcza, kadra_kierownicza, pracownicy = manager.filter_by_position()
 
+        # Liczenie pracowników w każdej grupie
+        def group_summary(group):
+            valid, soon_expiring, expired = self._get_training_summary(group)
+            return {
+                "valid": len(valid),
+                "soon_expiring": len(soon_expiring),
+                "expired": len(expired)
+            }
+        
+        kadra_zarzadcza_summary = group_summary(kadra_zarzadcza)
+        kadra_kierownicza_summary = group_summary(kadra_kierownicza)
+        pracownicy_summary = group_summary(pracownicy)
+
+
         current_date = format_date(datetime.now(), "%d.%m.%Y")
 
         file_name = f"raport_wyszkolenia_{datetime.now().strftime('%Y-%m-%d')}.html"
@@ -57,9 +71,9 @@ class HTMLReportGenerator:
             total_employees=total_employees,
             current_date=current_date,
             company_name=company_name,
-            kadra_zarzadcza_summary=self._get_training_summary(kadra_zarzadcza),
-            kadra_kierownicza_summary=self._get_training_summary(kadra_kierownicza),
-            pracownicy_summary=self._get_training_summary(pracownicy),
+            kadra_zarzadcza_summary = kadra_zarzadcza_summary,
+            kadra_kierownicza_summary = kadra_kierownicza_summary,
+            pracownicy_summary = pracownicy_summary,
             kadra_zarzadcza_count=len(kadra_zarzadcza),
             kadra_kierownicza_count=len(kadra_kierownicza),
             pracownicy_count=len(pracownicy)
