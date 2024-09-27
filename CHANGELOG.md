@@ -1,5 +1,26 @@
 # CHANGELOG
 
+## [v2.0.0] - 2024-09-27
+### Nowości:
+- Dodano możliwość generowania raportu o stanie wyszkolenia pracowników w formacie HTML z poziomu flagi `--generate-training-report`, który zawiera informacje o liczbie pracowników z ważnymi, wygasającymi oraz przeterminowanymi szkoleniami. Raport dzieli pracowników na trzy grupy zawodowe: kadra zarządzająca, kadra kierownicza oraz pracownicy. Raport jest zapisywany w katalogu `output/reports/`.
+- Dodano funkcję generowania list pracowników w formacie HTML dla różnych grup zawodowych z poziomu flagi `--generate-training-lists`. Automatycznie tworzone są osobne listy dla każdej grupy.
+- Wprowadzono flagę `--csv` umożliwiającą podanie pliku CSV przez linię komend oraz flagę `--shell`, która wyświetla dane pracowników w formie tabeli w konsoli, podzielonej na grupy zawodowe.
+
+### Zmodyfikowane:
+- Rozdzielono logikę generowania list i przeniesiono ją do nowej klasy `HTMLListGenerator`, co poprawia modularność kodu.
+- Rozdzielono logikę generowania raportów i przeniesiono ją do nowej klasy `HTMLReportGenerator`, co poprawia modularność kodu.
+- Uproszczono logikę obsługi argumentów CSV poprzez przeniesienie funkcji przetwarzającej pliki CSV do nowego modułu `arg_parser.py`.
+- Zaktualizowano dokumentację, aby uwzględniała nowe funkcjonalności.
+
+### Ulepszenia:
+- Zoptymalizowano proces przetwarzania danych pracowników oraz ich integracji z zewnętrzną bazą danych (URL), co umożliwia porównanie danych z pliku CSV z danymi z URL.
+- Wprowadzono klasę `Employee` do reprezentowania danych pracowników oraz automatyczne uzupełnianie brakujących pól stanowisko i email na podstawie danych z URL.
+- Ulepszono zarządzanie wyjątkami oraz logowanie błędów związanych z pobieraniem danych z zewnętrznych źródeł.
+
+## Naprawione:
+- Poprawiono logikę filtrowania pracowników według grup zawodowych oraz wyświetlanie liczby pracowników z aktualnymi, wygasającymi i przeterminowanymi szkoleniami.
+- Poprawiono proces przetwarzania flag, aby możliwe było łączenie różnych opcji w jednym uruchomieniu programu.
+
 ## [Undefined] - 2024-09-27 no.4
 ### Nowości:
 - Dodano nową funkcjonalność generowania raportu o stanie wyszkolenia pracowników w formacie HTML.
