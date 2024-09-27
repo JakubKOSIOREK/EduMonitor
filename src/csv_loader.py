@@ -28,6 +28,7 @@ class CSVLoader:
                 for row in csv_reader:
                     # Filtrowanie danych: sprawdzamy, czy wiersz jest poprawny
                     if self.is_valid_row(row):
+                        logger.debug(f"Wiersz z CSV: {row}")
                         filtered_data.append(row)
                     else:
                         self.logger.warning(f"Pominięto wiersz: {row}")
