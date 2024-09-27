@@ -1,5 +1,3 @@
-<!-- templates/employee_report_template.html -->
- 
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -78,22 +76,30 @@
 
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate; /* Wyłączamy łączenie komórek */
+            border-spacing: 10px; /* Dodajemy odstęp między komórkami */
             margin-top: 10px;
         }
 
-        table, th, td {
-            border: 1px solid #ccc;
-        }
-
         th, td {
-            padding: 5px;
-            text-align: left;
+            padding: 20px; /* Duże odstępy w komórkach */
             font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            background-color: #f9f9f9; /* Tło komórek */
+            border-radius: 15px; /* Zaokrąglone rogi dla każdej komórki */
+            border: none; /* Wyłączamy obramowanie */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Dodajemy cień dla efektu oddzielenia */
         }
 
-        th {
-            background-color: #f2f2f2;
+        /* Pierwsza kolumna: wiersze do lewej */
+        .align-left {
+            text-align: left;
+        }
+
+        /* Druga kolumna: wiersze wyśrodkowane */
+        .align-center {
+            text-align: center;
         }
 
         /* Stylizacja dla wydruku */
@@ -106,25 +112,12 @@
                 font-size: 10px;
             }
 
-            .header-date {
-                position: absolute;
-                top: 10mm;
-                right: 10mm;
-                font-size: 10px;
-            }
-
-            h1 {
-                font-size: 18px;
-                margin-top: 30mm;
-            }
-
-            h2 {
-                font-size: 14px;
-            }
-
             table, th, td {
                 font-size: 10px;
-                padding: 3px;
+                padding: 15px; /* Mniejsze odstępy w widoku wydruku */
+                border-radius: 15px; /* Zaokrąglone rogi także w widoku wydruku */
+                border: none;
+                box-shadow: none;
             }
         }
     </style>
@@ -142,9 +135,9 @@
     <div class="report-section">
         <h2>Podsumowanie dla całej firmy</h2>
         <p>Stan osobowy w {{ company_name }} na dzień {{ current_date }} : {{ total_employees }}</p>
-        <p class="valid status">Liczba pracowników z ważnymi szkoleniami: {{ valid_training }}</p>
-        <p class="soon-expiring status">Liczba pracowników z wygasającymi szkoleniami: {{ soon_expiring }}</p>
-        <p class="expired status">Liczba pracowników z przeterminowanymi szkoleniami: {{ expired }}</p>
+        <p class="valid status">Liczba pracowników z ważnymi szkoleniami: {{ valid_training }} ({{ valid_percentage }}%)</p>
+        <p class="soon-expiring status">Liczba pracowników z wygasającymi szkoleniami: {{ soon_expiring }} ({{ soon_expiring_percentage }}%)</p>
+        <p class="expired status">Liczba pracowników z przeterminowanymi szkoleniami: {{ expired }} ({{ expired_percentage }}%)</p>
     </div>
 
     <div class="report-section">
@@ -152,20 +145,20 @@
         <p>Liczba pracowników w grupie: {{ kadra_zarzadcza_count }}</p>
         <table>
             <tr>
-                <th>Status</th>
-                <th>Liczba pracowników</th>
+                <th class="align-left">Status</th>
+                <th class="align-center">Liczba pracowników</th>
             </tr>
             <tr>
-                <td class="valid">Ważne szkolenia</td>
-                <td>{{ kadra_zarzadcza_summary.valid }}</td>
+                <td class="align-left valid">Ważne szkolenia</td>
+                <td class="align-center">{{ kadra_zarzadcza_summary.valid }} ({{ kadra_zarzadcza_summary.valid_percentage }}%)</td>
             </tr>
             <tr>
-                <td class="soon-expiring">Szkolenia wygasające</td>
-                <td>{{ kadra_zarzadcza_summary.soon_expiring }}</td>
+                <td class="align-left soon-expiring">Szkolenia wygasające</td>
+                <td class="align-center">{{ kadra_zarzadcza_summary.soon_expiring }} ({{ kadra_zarzadcza_summary.soon_expiring_percentage }}%)</td>
             </tr>
             <tr>
-                <td class="expired">Przeterminowane szkolenia</td>
-                <td>{{ kadra_zarzadcza_summary.expired }}</td>
+                <td class="align-left expired">Przeterminowane szkolenia</td>
+                <td class="align-center">{{ kadra_zarzadcza_summary.expired }} ({{ kadra_zarzadcza_summary.expired_percentage }}%)</td>
             </tr>
         </table>
     </div>
@@ -175,20 +168,20 @@
         <p>Liczba pracowników w grupie: {{ kadra_kierownicza_count }}</p>
         <table>
             <tr>
-                <th>Status</th>
-                <th>Liczba pracowników</th>
+                <th class="align-left">Status</th>
+                <th class="align-center">Liczba pracowników</th>
             </tr>
             <tr>
-                <td class="valid">Ważne szkolenia</td>
-                <td>{{ kadra_kierownicza_summary.valid }}</td>
+                <td class="align-left valid">Ważne szkolenia</td>
+                <td class="align-center">{{ kadra_kierownicza_summary.valid }} ({{ kadra_kierownicza_summary.valid_percentage }}%)</td>
             </tr>
             <tr>
-                <td class="soon-expiring">Szkolenia wygasające</td>
-                <td>{{ kadra_kierownicza_summary.soon_expiring }}</td>
+                <td class="align-left soon-expiring">Szkolenia wygasające</td>
+                <td class="align-center">{{ kadra_kierownicza_summary.soon_expiring }} ({{ kadra_kierownicza_summary.soon_expiring_percentage }}%)</td>
             </tr>
             <tr>
-                <td class="expired">Przeterminowane szkolenia</td>
-                <td>{{ kadra_kierownicza_summary.expired }}</td>
+                <td class="align-left expired">Przeterminowane szkolenia</td>
+                <td class="align-center">{{ kadra_kierownicza_summary.expired }} ({{ kadra_kierownicza_summary.expired_percentage }}%)</td>
             </tr>
         </table>
     </div>
@@ -198,20 +191,20 @@
         <p>Liczba pracowników w grupie: {{ pracownicy_count }}</p>
         <table>
             <tr>
-                <th>Status</th>
-                <th>Liczba pracowników</th>
+                <th class="align-left">Status</th>
+                <th class="align-center">Liczba pracowników</th>
             </tr>
             <tr>
-                <td class="valid">Ważne szkolenia</td>
-                <td>{{ pracownicy_summary.valid }}</td>
+                <td class="align-left valid">Ważne szkolenia</td>
+                <td class="align-center">{{ pracownicy_summary.valid }} ({{ pracownicy_summary.valid_percentage }}%)</td>
             </tr>
             <tr>
-                <td class="soon-expiring">Szkolenia wygasające</td>
-                <td>{{ pracownicy_summary.soon_expiring }}</td>
+                <td class="align-left soon-expiring">Szkolenia wygasające</td>
+                <td class="align-center">{{ pracownicy_summary.soon_expiring }} ({{ pracownicy_summary.soon_expiring_percentage }}%)</td>
             </tr>
             <tr>
-                <td class="expired">Przeterminowane szkolenia</td>
-                <td>{{ pracownicy_summary.expired }}</td>
+                <td class="align-left expired">Przeterminowane szkolenia</td>
+                <td class="align-center">{{ pracownicy_summary.expired }} ({{ pracownicy_summary.expired_percentage }}%)</td>
             </tr>
         </table>
     </div>

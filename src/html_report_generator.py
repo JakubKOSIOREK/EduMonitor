@@ -42,22 +42,29 @@ class HTMLReportGenerator:
         valid_training, soon_expiring, expired = self._get_training_summary(employees)
         total_employees = len(employees)
 
+        # Obliczanie procentów dla wszystkich pracowników
+        valid_percentage = round(len(valid_training) / total_employees * 100) if total_employees > 0 else 0
+        soon_expiring_percentage = round(len(soon_expiring) / total_employees * 100) if total_employees > 0 else 0
+        expired_percentage = round(len(expired) / total_employees * 100) if total_employees > 0 else 0
+
         manager = EmployeeManager(employees, [])
         kadra_zarzadcza, kadra_kierownicza, pracownicy = manager.filter_by_position()
 
         # Liczenie pracowników w każdej grupie
-        def group_summary(group):
+        def group_summary(group, total_in_group):
             valid, soon_expiring, expired = self._get_training_summary(group)
             return {
                 "valid": len(valid),
                 "soon_expiring": len(soon_expiring),
-                "expired": len(expired)
+                "expired": len(expired),
+                "valid_percentage": round(len(valid) / total_in_group * 100) if total_in_group > 0 else 0,
+                "soon_expiring_percentage": round(len(soon_expiring) / total_in_group * 100) if total_in_group > 0 else 0,
+                "expired_percentage": round(len(expired) / total_in_group * 100) if total_in_group > 0 else 0
             }
         
-        kadra_zarzadcza_summary = group_summary(kadra_zarzadcza)
-        kadra_kierownicza_summary = group_summary(kadra_kierownicza)
-        pracownicy_summary = group_summary(pracownicy)
-
+        kadra_zarzadcza_summary = group_summary(kadra_zarzadcza, len(kadra_zarzadcza))
+        kadra_kierownicza_summary = group_summary(kadra_kierownicza, len(kadra_kierownicza))
+        pracownicy_summary = group_summary(pracownicy, len(pracownicy))
 
         current_date = format_date(datetime.now(), "%d.%m.%Y")
 
@@ -68,12 +75,15 @@ class HTMLReportGenerator:
             valid_training=len(valid_training),
             soon_expiring=len(soon_expiring),
             expired=len(expired),
+            valid_percentage=valid_percentage,
+            soon_expiring_percentage=soon_expiring_percentage,
+            expired_percentage=expired_percentage,
             total_employees=total_employees,
             current_date=current_date,
             company_name=company_name,
-            kadra_zarzadcza_summary = kadra_zarzadcza_summary,
-            kadra_kierownicza_summary = kadra_kierownicza_summary,
-            pracownicy_summary = pracownicy_summary,
+            kadra_zarzadcza_summary=kadra_zarzadcza_summary,
+            kadra_kierownicza_summary=kadra_kierownicza_summary,
+            pracownicy_summary=pracownicy_summary,
             kadra_zarzadcza_count=len(kadra_zarzadcza),
             kadra_kierownicza_count=len(kadra_kierownicza),
             pracownicy_count=len(pracownicy)
