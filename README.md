@@ -62,11 +62,11 @@ Program można uruchomić, używając flagi `--csv`, która wczytuje dane z plik
 
    ```sql
    Pracownicy - Szkolenie wygaśnie w ciągu 30 dni lub już wygasło (Liczba pracowników: 1)
-   +--------------+----------+-------+--------------------+----------------+------------+
-   | Nazwisko     | Imię     | Dział | Nazwa szkolenia    | Data szkolenia | Ważne do   |
-   +--------------+----------+-------+--------------------+----------------+------------+
-   | WAYNE        | BRUCE    |   DC  | Security awareness | 26.06.2023     | 24.06.2024 |
-   +--------------+----------+-------+--------------------+----------------+------------+
+   +--------------+----------+-------+--------------------+----------------+------------+--------+------------+
+   | Nazwisko     | Imię     | Dział | Nazwa szkolenia    | Data szkolenia | Ważne do   | db_URL | Stanowisko |
+   +--------------+----------+-------+--------------------+----------------+------------+--------+------------+
+   | WAYNE        | BRUCE    |   DC  | Security awareness | 26.06.2023     | 24.06.2024 | True   |            |
+   +--------------+----------+-------+--------------------+----------------+------------+--------+------------+
    ```
 
 3. Generowanie list pracowników w formacie HTML:
