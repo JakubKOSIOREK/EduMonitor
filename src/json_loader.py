@@ -25,12 +25,13 @@ class JSONLoader:
         employees = []
         for row in filtered_data:
             try:
+                self.logger.debug(f"Konwertowanie wiersza CSV na JSON: {row}")
                 data_szkolenia, data_waznosci = row[8].split("...")
             except ValueError:
                 data_szkolenia = ''
                 data_waznosci = ''
 
-            employees.append(Employee(
+            employee = Employee(
                 nazwisko=row[1],
                 imie=row[2],
                 kod=row[3],
@@ -38,7 +39,23 @@ class JSONLoader:
                 nazwa_szkolenia=row[7],
                 data_szkolenia=data_szkolenia.strip(),
                 data_waznosci=data_waznosci.strip()
-            ))
+            )
+
+            self.logger.debug(f"Pracownik z CSV (JSON): {employee}")
+            employees.append(employee)
+
+
+            '''employees.append(Employee(
+                nazwisko=row[1],
+                imie=row[2],
+                kod=row[3],
+                jednostka_organizacyjna=row[4],
+                nazwa_szkolenia=row[7],
+                data_szkolenia=data_szkolenia.strip(),
+                data_waznosci=data_waznosci.strip()
+            ))'''
+
+
         return employees
 
     def save_to_json(self, employees):
@@ -65,6 +82,9 @@ class JSONLoader:
             "stanowisko": emp.stanowisko,
             "email": emp.email
         } for emp in employees]
+
+        for emp in employees:
+            self.logger.debug(emp)
 
         try:
             with open(json_output_path, mode='w', encoding='utf-8') as json_file:

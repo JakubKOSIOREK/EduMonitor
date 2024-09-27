@@ -28,12 +28,17 @@
     - Jeżeli program zostanie uruchomiony z flagą `--shell`, moduł `table_display.py` wyświetla wyniki w formie tabeli w konsoli.
     - Pracownicy są grupowani na kadry zarządzające, kierownicze oraz pozostałych, a każda grupa jest podzielona według statusu ważności szkolenia: aktualne, zbliżające się do wygaśnięcia, przeterminowane.
 
-6. **Wyświetlanie wyników w konsoli (opcjonalne):**
-    - Jeżeli program zostanie uruchomiony z flagą `--generate-training-lists`, moduł html_list_generator.py generuje osobne listy w formacie HTML dla każdej grupy zawodowej:
+6. **Generowanie list pracowników na szolenie (opcjonalne):**
+    - Jeżeli program zostanie uruchomiony z flagą `--generate-training-lists`, moduł `html_list_generator.py` generuje osobne listy w formacie HTML dla każdej grupy zawodowej:
       - Kadra Zarządzająca
       - Kadra Kierownicza
       - Pracownicy
       > Listy są zapisywane w katalogu `output/lists/`.
+
+7. **Generowanie raportu o stanie wyszkolenia pracowników (opcjonalne):**
+    - Jeżeli program zostanie uruchomiony z flagą `--generate-training-report`, moduł `html_report_generator.py` generuje raport w formacie HTML.
+    - Wynikowy plik raportu zawiera szczegółowe informacje o grupach zawodowych i stanie ich szkoleń (ważne, wygasające, przeterminowane).
+    > Raporty są zapisywane w katalogu `output/reports/`.
 
 ## Moduły w projekcie
 
@@ -83,14 +88,20 @@
   - Generuje osobne listy dla różnych grup zawodowych (kadra zarządzająca, kadra kierownicza, pracownicy).
   - Listy są zapisywane w katalogu `output/lists/`.
 
-### 8. `logger_setup.py`
+### 8. `html_report_generator.py`
+- **Opis**: Moduł odpowiedzialny za generowanie raportu o stanie wyszkolenia pracowników w formacie HTML.
+- **Funkcjonalności**:
+  - Generuje osobne raporty pod nazwą `raport_wyszkolenia_<data>.html`.
+  - Raporty są zapisywane w katalogu `output/reports/`.
+
+### 9. `logger_setup.py`
 - **Opis**: Moduł odpowiedzialny za konfigurację loggera.
 - **Funkcjonalności**:
   - Umożliwia logowanie informacji, ostrzeżeń oraz błędów do pliku i konsoli.
   - Logi są zapisywane w pliku z timestampem, co ułatwia analizę działania programu.
   - Podczas testów logger może być mockowany, aby wyciszyć zbędne komunikaty.
 
-### 9. `arg_parser.py`
+### 10. `arg_parser.py`
 - **Opis**: Moduł odpowiedzialny za obsługę argumentów z linii komend.
 - **Funkcjonalności**:
   - Umożliwia uruchomienie programu z flagami `--csv`, `--shell`, `--generate-training-lists`, co pozwala na różne tryby pracy programu.

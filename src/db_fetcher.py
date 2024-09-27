@@ -39,6 +39,11 @@ class DBFetcher:
                 raw_data = json.loads(response.data.decode('utf-8'))
                 clean_data = raw_data.get("users", [])  # Wyciągamy dane pracowników
                 logger.info(f"Pobrano {len(clean_data)} rekordów pracowników z bazy danych.")
+                
+                # Logowanie każdego użytkownika z URL
+                for user in clean_data:
+                    logger.debug(f"Użytkownik z URL: {user}")
+
                 return clean_data
             elif response.status == 404:
                 logger.error(f"Błąd: URL nie został znaleziony (404).")

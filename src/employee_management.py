@@ -27,13 +27,22 @@ class EmployeeManager:
         db_employee_data = {(emp['nazwisko'].strip().lower(), emp['imie'].strip().lower()): emp for emp in self.employees_db}
 
         for employee in self.employees_json:
-            # Usuwanie spacji przed porównaniem nazwiska i imienia
-            db_employee = db_employee_data.get((employee.nazwisko.strip().lower(), employee.imie.strip().lower()))
+            nazwisko_json = employee.nazwisko.strip().lower()
+            imie_json = employee.imie.strip().lower()
+
+            db_employee = db_employee_data.get((nazwisko_json, imie_json))
+
+            logger.debug(f"Sprawdzanie: {employee.nazwisko.strip().lower()}, {employee.imie.strip().lower()}")
+
             if db_employee:
+                nazwisko_url = db_employee['nazwisko'].strip().lower()
+                imie_url = db_employee['imie'].strip().lower()
+                logger.debug(f"Dopasowanie URL: Nazwisko: {nazwisko_url}, Imię: {imie_url}")
                 employee.db_url = True
                 employee.stanowisko = db_employee.get('stanowisko', '')
                 employee.email = db_employee.get('email', '')
             else:
+                logger.debug(f"Brak dopasowania w URL: Nazwisko: {nazwisko_json}, Imię: {imie_json}")
                 employee.db_url = False
 
         return self.employees_json
