@@ -1,5 +1,92 @@
 # CHANGELOG
 
+## [v2.0.0] - 2024-09-27
+### Nowości:
+- Dodano możliwość generowania raportu o stanie wyszkolenia pracowników w formacie HTML z poziomu flagi `--generate-training-report`, który zawiera informacje o liczbie pracowników z ważnymi, wygasającymi oraz przeterminowanymi szkoleniami. Raport dzieli pracowników na trzy grupy zawodowe: kadra zarządzająca, kadra kierownicza oraz pracownicy. Raport jest zapisywany w katalogu `output/reports/`.
+- Dodano funkcję generowania list pracowników w formacie HTML dla różnych grup zawodowych z poziomu flagi `--generate-training-lists`. Automatycznie tworzone są osobne listy dla każdej grupy.
+- Wprowadzono flagę `--csv` umożliwiającą podanie pliku CSV przez linię komend oraz flagę `--shell`, która wyświetla dane pracowników w formie tabeli w konsoli, podzielonej na grupy zawodowe.
+
+### Zmodyfikowane:
+- Rozdzielono logikę generowania list i przeniesiono ją do nowej klasy `HTMLListGenerator`, co poprawia modularność kodu.
+- Rozdzielono logikę generowania raportów i przeniesiono ją do nowej klasy `HTMLReportGenerator`, co poprawia modularność kodu.
+- Uproszczono logikę obsługi argumentów CSV poprzez przeniesienie funkcji przetwarzającej pliki CSV do nowego modułu `arg_parser.py`.
+- Zaktualizowano dokumentację, aby uwzględniała nowe funkcjonalności.
+
+### Ulepszenia:
+- Zoptymalizowano proces przetwarzania danych pracowników oraz ich integracji z zewnętrzną bazą danych (URL), co umożliwia porównanie danych z pliku CSV z danymi z URL.
+- Wprowadzono klasę `Employee` do reprezentowania danych pracowników oraz automatyczne uzupełnianie brakujących pól stanowisko i email na podstawie danych z URL.
+- Ulepszono zarządzanie wyjątkami oraz logowanie błędów związanych z pobieraniem danych z zewnętrznych źródeł.
+
+## Naprawione:
+- Poprawiono logikę filtrowania pracowników według grup zawodowych oraz wyświetlanie liczby pracowników z aktualnymi, wygasającymi i przeterminowanymi szkoleniami.
+- Poprawiono proces przetwarzania flag, aby możliwe było łączenie różnych opcji w jednym uruchomieniu programu.
+
+## [Undefined] - 2024-09-27 no.4
+### Nowości:
+- Dodano nową funkcjonalność generowania raportu o stanie wyszkolenia pracowników w formacie HTML.
+  - Raport zawiera szczegółowe informacje na temat liczby pracowników z ważnymi, wygasającymi oraz przeterminowanymi szkoleniami.
+  - Raport dzieli pracowników na trzy grupy zawodowe: kadra zarządzająca, kadra kierownicza oraz pracownicy.
+  - Raport jest zapisywany w katalogu `output/reports/` z nazwą zawierającą datę generowania raportu.
+
+### Zmodyfikowane
+- Zaktualizowano dokumentację projektu, dodając sekcję o generowaniu raportu przy użyciu flagi `--generate-training-report`.
+
+### Naprawione
+- Poprawiono proces przetwarzania danych szkoleniowych, aby prawidłowo wyświetlać liczbę pracowników z ważnymi, wygasającymi i przeterminowanymi szkoleniami w raportach HTML.
+
+## [Undefined] - 2024-09-26 no.3
+### Dodane
+- Dodano nową funkcjonalność generowania list w formacie HTML dla różnych grup zawodowych:
+  - Kadra zarządzająca
+  - Kadra kierownicza
+  - Pracownicy
+- Nowa metoda `generate_lists_for_all_groups` w klasie `HTMLListGenerator`, która automatycznie generuje osobne listy dla każdej grupy zawodowej.
+- Zaktualizowano flagę `--generate-training-lists`, aby umożliwiała generowanie osobnych plików HTML dla każdej grupy.
+- Rozdzielono logikę generowania list od głównej funkcji, przenosząc ją do klasy `HTMLListGenerator` w celu lepszej organizacji kodu.
+
+### Zmodyfikowane
+- Uproszczono logikę w pliku `edumonitor.py`, która teraz korzysta z nowej metody `generate_lists_for_all_groups` do generowania list pracowników.
+
+### Naprawione
+- Poprawiono logikę obsługi flag, aby można było łączyć flagi `--csv` z `--shell` lub `--generate-training-lists` w jednym uruchomieniu programu.
+
+## [Undefined] - 2024-09-26 no.2
+### Zmiany:
+- **Przeniesienie logiki przetwarzania argumentu CSV**: Funkcja odpowiedzialna za walidację i przetwarzanie pliku CSV została przeniesiona z `edumonitor.py` do modułu `arg_parser.py`. 
+   - Nowa funkcja `process_csv_argument()` w `arg_parser.py` zajmuje się wczytywaniem, filtrowaniem oraz walidacją pliku CSV.
+   - Uproszczenie głównej funkcji `main()` w `edumonitor.py`, co poprawia czytelność i modularność kodu.
+
+## [Undefined] - 2024-09-26 no.1
+### Nowości:
+- **Dodano flagę --csv** umożliwiającą podanie pliku CSV z zewnętrznego źródła przez linię komend.
+    - Program odczytuje podany plik CSV, konwertuje jego zawartość do formatu JSON i zapisuje wynikowy plik JSON w katalogu `input/`.
+    - Plik JSON jest tworzony z nazwą w formacie `ukonczone_szkolenia_<timestamp>.json`, gdzie `<timestamp>` to aktualna data.
+- **Dodano flagę --shell** umożliwiającą wyświetlanie wyników w konsoli w postaci tabeli.
+    - Program wyświetla dane pracowników podzielone na grupy zawodowe (kadra zarządzająca, kadra kierownicza, pracownicy).
+    - Tabela zawiera informacje o pracownikach z aktualnym, wygasającym i już wygasłym szkoleniem.
+
+### Ulepszenia:
+- **Integracja danych z URL**:
+    - Program pobiera dane o pracownikach z zewnętrznej bazy danych (URL skonfigurowany w pliku `config.ini`), a następnie porównuje je z danymi z CSV.
+    - Do wynikowego pliku JSON dodano pola `db_url`, `stanowisko` oraz `email`, które uzupełniają informacje o pracowniku na podstawie danych z URL.
+- **Automatyczne uzupełnianie danych o pracownikach**:
+    - Jeśli dany pracownik znajduje się w bazie danych (URL), do jego rekordu w JSON dodawane są pola `stanowisko` oraz `email`.
+    - Dodano flagę `db_url = True/False`, informującą o tym, czy pracownik istnieje w bazie URL.
+- **Zoptymalizowano zarządzanie danymi pracowników**:
+    - Użycie klasy `Employee` do reprezentacji danych o pracownikach oraz porównywania ich z bazą URL.
+    - Automatyczne sortowanie plików JSON według daty, co umożliwia zawsze wyświetlanie najnowszego pliku z wynikami.
+
+### Poprawki:
+- **Obsługa wyjątków**:
+    - Poprawiono obsługę błędów przy ładowaniu danych z pliku JSON (np. błędne argumenty w funkcji `Employee`).
+    - Dodano lepsze logowanie i obsługę błędów HTTP oraz wyjątków podczas pobierania danych z URL.
+- **Poprawki związane z filtrowaniem pracowników**:
+    - Ulepszono filtrację pracowników według grup zawodowych, uwzględniając pola `stanowisko` i `email` pobrane z bazy URL.
+
+### Dokumentacja:
+- Zaktualizowano dokumentację, aby odzwierciedlała nową funkcjonalność flag `--csv` oraz `--shell`.
+- Opisano sposób działania programu, w tym proces odczytywania pliku CSV, konwersji do JSON oraz porównania danych z bazą URL.
+
 ## [v1.4.0] - 2024-09-25
 ### Nowości:
 - **Dodano nowe zmienne konfiguracyjne** w pliku `config/config.ini`:

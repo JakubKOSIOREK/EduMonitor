@@ -15,15 +15,12 @@ class TableDisplay:
     def display_employees_table(self, employees, group_name, table_title):
         """
         Wyświetla tabelę pracowników w konsoli przy użyciu PrettyTable.
-        
-        Args:
-            employees (list): Lista pracowników do wyświetlenia.
-            group_name (str): Nazwa grupy pracowników (np. Kadra Zarządzająca).
-            table_title (str): Tytuł tabeli.
         """
         if not employees:
             logger.info(f"Brak pracowników w grupie {group_name} - {table_title}.")
             return
+        
+        logger.debug(f"Wyświetlanie {len(employees)} pracowników dla grupy {group_name} - {table_title}")
 
         # Sortowanie po nazwisku z użyciem locale.strxfrm() dla obsługi polskich znaków
         employees = sorted(employees, key=lambda emp: locale.strxfrm(emp.nazwisko))
@@ -31,7 +28,7 @@ class TableDisplay:
         print(f"\n{group_name} - {table_title} (Liczba pracowników: {len(employees)})")
 
         table = PrettyTable()
-        table.field_names = ["Nazwisko", "Imię", "Dział", "Nazwa szkolenia", "Data szkolenia", "Ważne do"]
+        table.field_names = ["Nazwisko", "Imię", "Dział", "Nazwa szkolenia", "Data szkolenia", "Ważne do", "db_URL", "Stanowisko"]
 
         table.align = "l"  # Wyrównanie wszystkich kolumn do lewej
         table.align["Dział"] = "c"  # Wyśrodkowanie dla kolumny 'Dział'
@@ -42,10 +39,12 @@ class TableDisplay:
             table.add_row([
                 employee.nazwisko,
                 employee.imie,
-                employee.jednostka,
+                employee.jednostka_organizacyjna,
                 employee.nazwa_szkolenia,
                 employee.data_szkolenia.strftime("%d.%m.%Y"),
-                employee.wazne_do.strftime("%d.%m.%Y")
+                employee.data_waznosci.strftime("%d.%m.%Y"),
+                employee.db_url,
+                employee.stanowisko
             ])
 
         print(table)
@@ -67,11 +66,6 @@ class TableDisplay:
     def display_all_groups(self, kadra_zarzadcza, kadra_kierownicza, pracownicy):
         """
         Wyświetla tabele dla wszystkich grup zawodowych.
-        
-        Args:
-            kadra_zarzadcza (list): Lista pracowników w kadrze zarządzającej.
-            kadra_kierownicza (list): Lista pracowników w kadrze kierowniczej.
-            pracownicy (list): Lista pozostałych pracowników.
         """
         if kadra_zarzadcza:
             self.display_group_tables(kadra_zarzadcza, "Kadra Zarządzająca")

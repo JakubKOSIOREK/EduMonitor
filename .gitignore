@@ -62,3 +62,7 @@ migrations/
 output/
 !edumonitor_timestamp.log
 !logs/example_edumonitor_timestamp.log
+input/*.json
+komendy.md
+desktop.ini
+svn.ico
