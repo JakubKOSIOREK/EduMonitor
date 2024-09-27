@@ -45,14 +45,17 @@ def main():
     # Wyświetlanie danych w konsoli
     if args.shell and employees_json:
         logger.info("Wyświetlanie danych w trybie interaktywnym.")
+        logger.debug(f"Wyświetlanie danych w trybie interaktywnym. Liczba pracowników: {len(employees_json)}")
         employees_db = db_fetcher.fetch_employee_data_from_url()
         manager = EmployeeManager(employees_json, employees_db)
+        employees_json = manager.check_employee_in_db()
         kadra_zarzadcza, kadra_kierownicza, pracownicy = manager.filter_by_position()
         table_display.display_all_groups(kadra_zarzadcza, kadra_kierownicza, pracownicy)
 
     # Generowanie list w formacie HTML
     if args.generate_training_lists and employees_json:
         logger.info("Generowanie list pracowników w formacie HTML.")
+        logger.debug(f"Generowanie list pracowników. Liczba pracowników: {len(employees_json)}")
         employees_db = db_fetcher.fetch_employee_data_from_url()
         manager = EmployeeManager(employees_json, employees_db)
         employees_json = manager.check_employee_in_db()
@@ -62,6 +65,7 @@ def main():
     # Generowanie raportu o stanie szkoleń
     if args.generate_training_report and employees_json:
         logger.info("Generowanie raportu o stanie wyszkolenia pracowników.")
+        logger.debug(f"Generowanie list pracowników. Liczba pracowników: {len(employees_json)}")
         employees_db = db_fetcher.fetch_employee_data_from_url()
         manager = EmployeeManager(employees_json, employees_db)
         employees_json = manager.check_employee_in_db()

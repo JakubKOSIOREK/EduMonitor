@@ -19,6 +19,8 @@ class TableDisplay:
         if not employees:
             logger.info(f"Brak pracowników w grupie {group_name} - {table_title}.")
             return
+        
+        logger.debug(f"Wyświetlanie {len(employees)} pracowników dla grupy {group_name} - {table_title}")
 
         # Sortowanie po nazwisku z użyciem locale.strxfrm() dla obsługi polskich znaków
         employees = sorted(employees, key=lambda emp: locale.strxfrm(emp.nazwisko))
@@ -26,7 +28,7 @@ class TableDisplay:
         print(f"\n{group_name} - {table_title} (Liczba pracowników: {len(employees)})")
 
         table = PrettyTable()
-        table.field_names = ["Nazwisko", "Imię", "Dział", "Nazwa szkolenia", "Data szkolenia", "Ważne do"]
+        table.field_names = ["Nazwisko", "Imię", "Dział", "Nazwa szkolenia", "Data szkolenia", "Ważne do", "db_URL", "Stanowisko"]
 
         table.align = "l"  # Wyrównanie wszystkich kolumn do lewej
         table.align["Dział"] = "c"  # Wyśrodkowanie dla kolumny 'Dział'
@@ -40,7 +42,9 @@ class TableDisplay:
                 employee.jednostka_organizacyjna,
                 employee.nazwa_szkolenia,
                 employee.data_szkolenia.strftime("%d.%m.%Y"),
-                employee.data_waznosci.strftime("%d.%m.%Y")
+                employee.data_waznosci.strftime("%d.%m.%Y"),
+                employee.db_url,
+                employee.stanowisko
             ])
 
         print(table)
