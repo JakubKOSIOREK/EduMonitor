@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## [v2.1.0]
+### Zmiany w szablonie HTML (data)
+#### Udoskonalenia wizualne
+- **Nagłówek:**
+  - Zwiększono rozmiar czcionki dla nagłówka `h1` w trybie wydruku, aby poprawić jego widoczność.
+- **Wydruk:**
+  - Zmniejszono czcionkę dla elementu `Liczba pracowników w grupie:` w opcji wydruku, aby lepiej dostosować raport do formatu A4.
+  - Ustawiono wyśrodkowanie tekstu dla nagłówka `Status` w trybie wydruku.
+  - Dodano zaokrąglenie narożników do ramek w sekcjach raportu w opcji wydruku.
+  - Ustalono spójne ramki dla wszystkich sekcji w widoku wydruku.
+- **Stylizacja:**
+  - Pogrubiono tekst `Liczba pracowników w grupie:` w widoku HTML, poprawiając jego czytelność.
+  - Odsunięto teksty w tabelach (`Status`, `Ważne szkolenia`, `Szkolenia wygasające`, `Przeterminowane szkolenia`) od lewej krawędzi dla lepszego wyglądu.
+  - Przywrócono kolory w pierwszej sekcji zarówno w widoku HTML, jak i w druku, aby poprawić wizualną klarowność raportu.
+- **Ogólne poprawki:**
+  - Wprowadzono spójne odstępy oraz padding dla różnych elementów, co poprawia ogólną czytelność i estetykę raportu.
+
 ## [v2.0.0] - 2024-09-27
 ### Nowości:
 - Dodano możliwość generowania raportu o stanie wyszkolenia pracowników w formacie HTML z poziomu flagi `--generate-training-report`, który zawiera informacje o liczbie pracowników z ważnymi, wygasającymi oraz przeterminowanymi szkoleniami. Raport dzieli pracowników na trzy grupy zawodowe: kadra zarządzająca, kadra kierownicza oraz pracownicy. Raport jest zapisywany w katalogu `output/reports/`.
