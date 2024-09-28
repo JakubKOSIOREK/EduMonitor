@@ -47,11 +47,11 @@
 
         /* Pogrubienie dla tekstu "Liczba pracowników w grupie:" */
         .employee-count {
-            font-weight: bold;
+            font-weight: bold; /* Dodajemy pogrubienie */
         }
 
         .report-section {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             border: 1px solid #ccc;
             background-color: white;
             padding: 10px;
@@ -88,17 +88,17 @@
         table {
             width: 100%;
             border-collapse: separate;
-            border-spacing: 10px;
-            margin-top: 10px;
+            border-spacing: 5px; /* Zmniejszamy odstępy między komórkami */
+            margin-top: 5px; /* Zmniejszamy marginesy tabel */
         }
 
         th, td {
-            padding: 15px;
-            font-size: 15px;
+            padding: 10px; /* Zmniejszamy padding wewnątrz komórek */
+            font-size: 12px; /* Zmniejszamy czcionkę dla komórek */
             font-weight: bold;
             text-align: center;
             background-color: #f9f9f9;
-            border-radius: 15px;
+            border-radius: 10px;
             border: none;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
@@ -146,6 +146,7 @@
             text-align: center;
         }
 
+        /* Stylizacja dla wydruku */
         @media print {
             body {
                 margin: 0;
@@ -155,26 +156,26 @@
             }
 
             h1, h2 {
-                font-size: 14px;
+                font-size: 12px; /* Zmniejszenie rozmiaru nagłówków */
+            }
+
+            p {
+                font-size: 10px;
             }
 
             table, th, td {
                 font-size: 10px;
-                padding: 10px;
+                padding: 5px; /* Zmniejszamy padding w komórkach */
                 border-radius: 10px;
                 box-shadow: none;
             }
 
             .report-section {
                 margin-bottom: 10px;
-                page-break-inside: avoid;
+                page-break-inside: avoid; /* Unikamy podziału sekcji */
             }
 
             .header-date {
-                font-size: 10px;
-            }
-
-            p {
                 font-size: 10px;
             }
 
