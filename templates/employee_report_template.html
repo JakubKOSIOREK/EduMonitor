@@ -24,7 +24,7 @@
 
         h1 {
             margin: 0;
-            font-size: 20px;
+            font-size: 25px;
             color: #333;
         }
 
@@ -33,11 +33,11 @@
             color: white;
             padding: 5px;
             border-radius: 5px;
-            font-size: 16px;
+            font-size: 20px;
         }
 
         p {
-            font-size: 12px;
+            font-size: 15px;
             line-height: 1.6;
         }
 
@@ -50,54 +50,88 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        .status {
-            margin: 5px 0;
-            padding: 5px;
-            border-radius: 5px;
+        /* Klasy dla kolorów statusów w pierwszej sekcji */
+        .valid, .soon-expiring, .expired, .status {
+            padding-left: 15px; /* Odsunięcie tekstu od lewej krawędzi */
+            font-weight: bold; /* Pogrubienie czcionki */
         }
 
         .valid {
             background-color: #d4edda;
             border: 1px solid #c3e6cb;
+            border-radius: 10px; 
             color: #155724;
         }
 
         .soon-expiring {
             background-color: #fff3cd;
             border: 1px solid #ffeeba;
+            border-radius: 10px; 
             color: #856404;
         }
 
         .expired {
             background-color: #f8d7da;
             border: 1px solid #f5c6cb;
+            border-radius: 10px; 
             color: #721c24;
         }
 
         table {
             width: 100%;
-            border-collapse: separate; /* Wyłączamy łączenie komórek */
-            border-spacing: 10px; /* Dodajemy odstęp między komórkami */
+            border-collapse: separate;
+            border-spacing: 10px;
             margin-top: 10px;
         }
 
         th, td {
-            padding: 20px; /* Duże odstępy w komórkach */
-            font-size: 12px;
+            padding: 10px;
+            font-size: 15px;
             font-weight: bold;
             text-align: center;
-            background-color: #f9f9f9; /* Tło komórek */
-            border-radius: 15px; /* Zaokrąglone rogi dla każdej komórki */
-            border: none; /* Wyłączamy obramowanie */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Dodajemy cień dla efektu oddzielenia */
+            background-color: #f9f9f9;
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        /* Pierwsza kolumna: wiersze do lewej */
+        th {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .valid-desc {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 10px;
+        }
+
+        .soon-expiring-desc {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            border-radius: 10px;
+        }
+
+        .expired-desc {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 10px;
+        }
+
+        .value-cell {
+            background-color: #f0f0f0;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
         .align-left {
             text-align: left;
         }
 
-        /* Druga kolumna: wiersze wyśrodkowane */
         .align-center {
             text-align: center;
         }
@@ -106,24 +140,83 @@
         @media print {
             body {
                 margin: 0;
-                padding: 10mm;
+                padding: 5mm;
                 background-color: white;
-                box-shadow: none;
                 font-size: 10px;
+            }
+
+            h1, h2 {
+                font-size: 14px;
             }
 
             table, th, td {
                 font-size: 10px;
-                padding: 15px; /* Mniejsze odstępy w widoku wydruku */
-                border-radius: 15px; /* Zaokrąglone rogi także w widoku wydruku */
-                border: none;
+                padding: 3px;
+                border-radius: 0;
                 box-shadow: none;
+            }
+
+            .report-section {
+                margin-bottom: 10px;
+                page-break-inside: avoid;
+            }
+
+            .header-date {
+                font-size: 10px;
+            }
+
+            p {
+                font-size: 10px;
+            }
+
+            /* Zachowanie kolorowych ramek z zaokrąglonymi narożnikami dla wydruku */
+            .valid, .soon-expiring, .expired, .valid-desc, .soon-expiring-desc, .expired-desc, .value-cell {
+                border: 1px solid #c3e6cb !important; 
+                border-radius: 10px !important; 
+            }
+
+            .valid {
+                background-color: #d4edda !important;
+                color: #155724 !important;
+            }
+
+            .soon-expiring {
+                background-color: #fff3cd !important;
+                color: #856404 !important;
+            }
+
+            .expired {
+                background-color: #f8d7da !important;
+                color: #721c24 !important;
+            }
+
+            .valid-desc {
+                background-color: #d4edda !important;
+                color: #155724 !important;
+                border: 1px solid #c3e6cb !important;
+            }
+
+            .soon-expiring-desc {
+                background-color: #fff3cd !important;
+                color: #856404 !important;
+                border: 1px solid #ffeeba !important;
+            }
+
+            .expired-desc {
+                background-color: #f8d7da !important;
+                color: #721c24 !important;
+                border: 1px solid #f5c6cb !important;
+            }
+
+            .value-cell {
+                background-color: #f0f0f0 !important;
+                color: #333 !important;
+                border: 1px solid #ccc !important;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Data w prawym górnym rogu -->
     <div class="header-date">
         <p>Gdynia dnia {{ current_date }}</p>
     </div>
@@ -134,7 +227,6 @@
 
     <div class="report-section">
         <h2>Podsumowanie dla całej firmy</h2>
-        <p>Stan osobowy w {{ company_name }} na dzień {{ current_date }} : {{ total_employees }}</p>
         <p class="valid status">Liczba pracowników z ważnymi szkoleniami: {{ valid_training }} ({{ valid_percentage }}%)</p>
         <p class="soon-expiring status">Liczba pracowników z wygasającymi szkoleniami: {{ soon_expiring }} ({{ soon_expiring_percentage }}%)</p>
         <p class="expired status">Liczba pracowników z przeterminowanymi szkoleniami: {{ expired }} ({{ expired_percentage }}%)</p>
@@ -149,16 +241,16 @@
                 <th class="align-center">Liczba pracowników</th>
             </tr>
             <tr>
-                <td class="align-left valid">Ważne szkolenia</td>
-                <td class="align-center">{{ kadra_zarzadcza_summary.valid }} ({{ kadra_zarzadcza_summary.valid_percentage }}%)</td>
+                <td class="align-left valid-desc">Ważne szkolenia</td>
+                <td class="align-center value-cell">{{ kadra_zarzadcza_summary.valid }} ({{ kadra_zarzadcza_summary.valid_percentage }}%)</td>
             </tr>
             <tr>
-                <td class="align-left soon-expiring">Szkolenia wygasające</td>
-                <td class="align-center">{{ kadra_zarzadcza_summary.soon_expiring }} ({{ kadra_zarzadcza_summary.soon_expiring_percentage }}%)</td>
+                <td class="align-left soon-expiring-desc">Szkolenia wygasające</td>
+                <td class="align-center value-cell">{{ kadra_zarzadcza_summary.soon_expiring }} ({{ kadra_zarzadcza_summary.soon_expiring_percentage }}%)</td>
             </tr>
             <tr>
-                <td class="align-left expired">Przeterminowane szkolenia</td>
-                <td class="align-center">{{ kadra_zarzadcza_summary.expired }} ({{ kadra_zarzadcza_summary.expired_percentage }}%)</td>
+                <td class="align-left expired-desc">Przeterminowane szkolenia</td>
+                <td class="align-center value-cell">{{ kadra_zarzadcza_summary.expired }} ({{ kadra_zarzadcza_summary.expired_percentage }}%)</td>
             </tr>
         </table>
     </div>
@@ -172,16 +264,16 @@
                 <th class="align-center">Liczba pracowników</th>
             </tr>
             <tr>
-                <td class="align-left valid">Ważne szkolenia</td>
-                <td class="align-center">{{ kadra_kierownicza_summary.valid }} ({{ kadra_kierownicza_summary.valid_percentage }}%)</td>
+                <td class="align-left valid-desc">Ważne szkolenia</td>
+                <td class="align-center value-cell">{{ kadra_kierownicza_summary.valid }} ({{ kadra_kierownicza_summary.valid_percentage }}%)</td>
             </tr>
             <tr>
-                <td class="align-left soon-expiring">Szkolenia wygasające</td>
-                <td class="align-center">{{ kadra_kierownicza_summary.soon_expiring }} ({{ kadra_kierownicza_summary.soon_expiring_percentage }}%)</td>
+                <td class="align-left soon-expiring-desc">Szkolenia wygasające</td>
+                <td class="align-center value-cell">{{ kadra_kierownicza_summary.soon_expiring }} ({{ kadra_kierownicza_summary.soon_expiring_percentage }}%)</td>
             </tr>
             <tr>
-                <td class="align-left expired">Przeterminowane szkolenia</td>
-                <td class="align-center">{{ kadra_kierownicza_summary.expired }} ({{ kadra_kierownicza_summary.expired_percentage }}%)</td>
+                <td class="align-left expired-desc">Przeterminowane szkolenia</td>
+                <td class="align-center value-cell">{{ kadra_kierownicza_summary.expired }} ({{ kadra_kierownicza_summary.expired_percentage }}%)</td>
             </tr>
         </table>
     </div>
@@ -195,16 +287,16 @@
                 <th class="align-center">Liczba pracowników</th>
             </tr>
             <tr>
-                <td class="align-left valid">Ważne szkolenia</td>
-                <td class="align-center">{{ pracownicy_summary.valid }} ({{ pracownicy_summary.valid_percentage }}%)</td>
+                <td class="align-left valid-desc">Ważne szkolenia</td>
+                <td class="align-center value-cell">{{ pracownicy_summary.valid }} ({{ pracownicy_summary.valid_percentage }}%)</td>
             </tr>
             <tr>
-                <td class="align-left soon-expiring">Szkolenia wygasające</td>
-                <td class="align-center">{{ pracownicy_summary.soon_expiring }} ({{ pracownicy_summary.soon_expiring_percentage }}%)</td>
+                <td class="align-left soon-expiring-desc">Szkolenia wygasające</td>
+                <td class="align-center value-cell">{{ pracownicy_summary.soon_expiring }} ({{ pracownicy_summary.soon_expiring_percentage }}%)</td>
             </tr>
             <tr>
-                <td class="align-left expired">Przeterminowane szkolenia</td>
-                <td class="align-center">{{ pracownicy_summary.expired }} ({{ pracownicy_summary.expired_percentage }}%)</td>
+                <td class="align-left expired-desc">Przeterminowane szkolenia</td>
+                <td class="align-center value-cell">{{ pracownicy_summary.expired }} ({{ pracownicy_summary.expired_percentage }}%)</td>
             </tr>
         </table>
     </div>
