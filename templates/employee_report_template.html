@@ -174,7 +174,11 @@
                 font-size: 10px;
             }
 
-            h1, h2 {
+            h1 {
+                font-size: 18px; /* Zwiększona czcionka dla nagłówka h1 w trybie wydruku */
+            }
+
+            h2 {
                 font-size: 12px;
             }
 
@@ -182,11 +186,21 @@
                 font-size: 10px;
             }
 
+            /* Zmniejszenie czcionki dla "Liczba pracowników w grupie" w wydruku */
+            .employee-count {
+                font-size: 9px; /* Zmniejszona czcionka dla wydruku */
+            }
+
             table, th, td {
                 font-size: 9px;
                 padding: 3px;
                 border-radius: 10px;
                 box-shadow: none;
+            }
+
+            /* Wyśrodkowanie nagłówka Status */
+            th.align-left {
+                text-align: center;
             }
 
             .report-section {
