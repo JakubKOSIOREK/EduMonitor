@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## [Unreleased]
+## [v2.1.0]
 ### Zmiany w szablonie HTML (data)
 #### Udoskonalenia wizualne
 - **Nagłówek:**
