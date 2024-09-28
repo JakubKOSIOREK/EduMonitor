@@ -39,6 +39,10 @@
         p {
             font-size: 15px;
             line-height: 1.6;
+            padding: 10px;
+            border: 1px solid #ccc;  /* Dodano ramkę */
+            border-radius: 10px;  /* Zaokrąglenie narożników */
+            background-color: #f9f9f9; /* Tło */
         }
 
         .report-section {
@@ -50,30 +54,29 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        /* Klasy dla kolorów statusów w pierwszej sekcji */
         .valid, .soon-expiring, .expired, .status {
-            padding-left: 15px; /* Odsunięcie tekstu od lewej krawędzi */
-            font-weight: bold; /* Pogrubienie czcionki */
+            padding-left: 15px;
+            font-weight: bold;
         }
 
         .valid {
             background-color: #d4edda;
             border: 1px solid #c3e6cb;
-            border-radius: 10px; 
+            border-radius: 10px;
             color: #155724;
         }
 
         .soon-expiring {
             background-color: #fff3cd;
             border: 1px solid #ffeeba;
-            border-radius: 10px; 
+            border-radius: 10px;
             color: #856404;
         }
 
         .expired {
             background-color: #f8d7da;
             border: 1px solid #f5c6cb;
-            border-radius: 10px; 
+            border-radius: 10px;
             color: #721c24;
         }
 
@@ -95,9 +98,12 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
+        /* Dodanie ramki i zaokrąglenie narożników dla nagłówków tabeli */
         th {
             background-color: #f0f0f0;
             color: #333;
+            border: 1px solid #ccc;
+            border-radius: 10px;
         }
 
         .valid-desc {
@@ -152,7 +158,7 @@
             table, th, td {
                 font-size: 10px;
                 padding: 3px;
-                border-radius: 0;
+                border-radius: 10px; /* Dodanie zaokrąglenia narożników dla tabeli w widoku wydruku */
                 box-shadow: none;
             }
 
@@ -169,10 +175,16 @@
                 font-size: 10px;
             }
 
-            /* Zachowanie kolorowych ramek z zaokrąglonymi narożnikami dla wydruku */
+            /* Zachowanie kolorowych ramek i zaokrąglonych narożników dla wydruku */
+            th {
+                border: 1px solid #ccc !important;
+                border-radius: 10px !important; /* Zaokrąglenie narożników */
+                background-color: #f0f0f0 !important;
+            }
+
             .valid, .soon-expiring, .expired, .valid-desc, .soon-expiring-desc, .expired-desc, .value-cell {
-                border: 1px solid #c3e6cb !important; 
-                border-radius: 10px !important; 
+                border: 1px solid #c3e6cb !important;
+                border-radius: 10px !important;
             }
 
             .valid {
@@ -193,25 +205,21 @@
             .valid-desc {
                 background-color: #d4edda !important;
                 color: #155724 !important;
-                border: 1px solid #c3e6cb !important;
             }
 
             .soon-expiring-desc {
                 background-color: #fff3cd !important;
                 color: #856404 !important;
-                border: 1px solid #ffeeba !important;
             }
 
             .expired-desc {
                 background-color: #f8d7da !important;
                 color: #721c24 !important;
-                border: 1px solid #f5c6cb !important;
             }
 
             .value-cell {
                 background-color: #f0f0f0 !important;
                 color: #333 !important;
-                border: 1px solid #ccc !important;
             }
         }
     </style>
