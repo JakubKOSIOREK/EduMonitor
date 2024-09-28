@@ -45,16 +45,17 @@
             background-color: #f9f9f9;
         }
 
-        /* Pogrubienie dla tekstu "Liczba pracowników w grupie:" */
+        /* Pogrubienie i powiększenie tekstu "Liczba pracowników w grupie:" */
         .employee-count {
-            font-weight: bold; /* Dodajemy pogrubienie */
+            font-weight: bold;
+            font-size: 18px; /* Powiększenie czcionki */
         }
 
         .report-section {
             margin-bottom: 10px;
             border: 1px solid #ccc;
             background-color: white;
-            padding: 10px;
+            padding: 5px; /* Zmniejszamy padding w sekcjach */
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
@@ -88,13 +89,13 @@
         table {
             width: 100%;
             border-collapse: separate;
-            border-spacing: 5px; /* Zmniejszamy odstępy między komórkami */
+            border-spacing: 3px; /* Zmniejszamy odstępy między komórkami */
             margin-top: 5px; /* Zmniejszamy marginesy tabel */
         }
 
         th, td {
-            padding: 10px; /* Zmniejszamy padding wewnątrz komórek */
-            font-size: 12px; /* Zmniejszamy czcionkę dla komórek */
+            padding: 5px; /* Zmniejszamy padding wewnątrz komórek */
+            font-size: 14px; /* Zmniejszamy czcionkę w komórkach tabel */
             font-weight: bold;
             text-align: center;
             background-color: #f9f9f9;
@@ -152,26 +153,26 @@
                 margin: 0;
                 padding: 5mm;
                 background-color: white;
-                font-size: 10px;
+                font-size: 10px; /* Zmniejszenie czcionki dla wydruku */
             }
 
             h1, h2 {
                 font-size: 12px; /* Zmniejszenie rozmiaru nagłówków */
             }
 
-            p {
-                font-size: 10px;
+            p.employee-count {
+                font-size: 8px; /* Zmniejszenie czcionki dla paragrafu "Liczba pracowników" */
             }
 
             table, th, td {
-                font-size: 10px;
-                padding: 5px; /* Zmniejszamy padding w komórkach */
+                font-size: 9px; /* Zmniejszenie czcionki dla wydruku */
+                padding: 3px; /* Zmniejszamy padding w komórkach */
                 border-radius: 10px;
                 box-shadow: none;
             }
 
             .report-section {
-                margin-bottom: 10px;
+                margin-bottom: 5px;
                 page-break-inside: avoid; /* Unikamy podziału sekcji */
             }
 
