@@ -16,10 +16,21 @@
         }
 
         .header-date {
-            position: absolute;
-            top: 20px;
-            right: 20px;
+            text-align: right;
             font-size: 12px;
+            margin-bottom: 10px;
+            border: none;
+            background: none;
+            box-shadow: none;
+            padding: 0;
+        }
+
+        .header-date p {
+            margin: 0;
+            padding: 0;
+            border: none;
+            background: none;
+            box-shadow: none;
         }
 
         h1 {
@@ -45,17 +56,17 @@
             background-color: #f9f9f9;
         }
 
-        /* Pogrubienie i powiększenie tekstu "Liczba pracowników w grupie:" */
+        /* Pogrubienie i zwiększenie czcionki dla "Liczba pracowników w grupie" */
         .employee-count {
+            font-size: 15px;
             font-weight: bold;
-            font-size: 18px; /* Powiększenie czcionki */
         }
 
         .report-section {
             margin-bottom: 10px;
             border: 1px solid #ccc;
             background-color: white;
-            padding: 5px; /* Zmniejszamy padding w sekcjach */
+            padding: 5px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
@@ -89,13 +100,13 @@
         table {
             width: 100%;
             border-collapse: separate;
-            border-spacing: 3px; /* Zmniejszamy odstępy między komórkami */
-            margin-top: 5px; /* Zmniejszamy marginesy tabel */
+            border-spacing: 3px;
+            margin-top: 5px;
         }
 
         th, td {
-            padding: 5px; /* Zmniejszamy padding wewnątrz komórek */
-            font-size: 14px; /* Zmniejszamy czcionkę w komórkach tabel */
+            padding: 10px; /* Zwiększamy padding, aby odsunać tekst */
+            font-size: 14px;
             font-weight: bold;
             text-align: center;
             background-color: #f9f9f9;
@@ -116,6 +127,7 @@
             color: #155724;
             border: 1px solid #c3e6cb;
             border-radius: 10px;
+            padding-left: 15px; /* Dodajemy padding, aby odsunać tekst */
         }
 
         .soon-expiring-desc {
@@ -123,6 +135,7 @@
             color: #856404;
             border: 1px solid #ffeeba;
             border-radius: 10px;
+            padding-left: 15px; /* Dodajemy padding, aby odsunać tekst */
         }
 
         .expired-desc {
@@ -130,6 +143,7 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
             border-radius: 10px;
+            padding-left: 15px; /* Dodajemy padding, aby odsunać tekst */
         }
 
         .value-cell {
@@ -149,86 +163,46 @@
 
         /* Stylizacja dla wydruku */
         @media print {
+            .header-date {
+                font-size: 10px;
+            }
+
             body {
                 margin: 0;
                 padding: 5mm;
                 background-color: white;
-                font-size: 10px; /* Zmniejszenie czcionki dla wydruku */
+                font-size: 10px;
             }
 
             h1, h2 {
-                font-size: 12px; /* Zmniejszenie rozmiaru nagłówków */
+                font-size: 12px;
             }
 
-            p.employee-count {
-                font-size: 8px; /* Zmniejszenie czcionki dla paragrafu "Liczba pracowników" */
+            p {
+                font-size: 10px;
             }
 
             table, th, td {
-                font-size: 9px; /* Zmniejszenie czcionki dla wydruku */
-                padding: 3px; /* Zmniejszamy padding w komórkach */
+                font-size: 9px;
+                padding: 3px;
                 border-radius: 10px;
                 box-shadow: none;
             }
 
             .report-section {
                 margin-bottom: 5px;
-                page-break-inside: avoid; /* Unikamy podziału sekcji */
+                page-break-inside: avoid;
             }
 
-            .header-date {
+            .header-date p {
                 font-size: 10px;
-            }
-
-            th {
-                border: 1px solid #ccc !important;
-                border-radius: 10px !important;
-                background-color: #f0f0f0 !important;
-            }
-
-            .valid, .soon-expiring, .expired, .valid-desc, .soon-expiring-desc, .expired-desc, .value-cell {
-                border: 1px solid #c3e6cb !important;
-                border-radius: 10px !important;
-            }
-
-            .valid {
-                background-color: #d4edda !important;
-                color: #155724 !important;
-            }
-
-            .soon-expiring {
-                background-color: #fff3cd !important;
-                color: #856404 !important;
-            }
-
-            .expired {
-                background-color: #f8d7da !important;
-                color: #721c24 !important;
-            }
-
-            .valid-desc {
-                background-color: #d4edda !important;
-                color: #155724 !important;
-            }
-
-            .soon-expiring-desc {
-                background-color: #fff3cd !important;
-                color: #856404 !important;
-            }
-
-            .expired-desc {
-                background-color: #f8d7da !important;
-                color: #721c24 !important;
-            }
-
-            .value-cell {
-                background-color: #f0f0f0 !important;
-                color: #333 !important;
             }
         }
     </style>
 </head>
 <body>
+
+    <!-- Data wyświetlana nad nagłówkiem -->
     <div class="header-date">
         <p>Gdynia dnia {{ current_date }}</p>
     </div>
@@ -237,6 +211,7 @@
         <h1>Raport z odbytych szkoleń Security Awareness</h1>
     </div>
 
+    <!-- Sekcja raportu dla całej firmy -->
     <div class="report-section">
         <h2>Podsumowanie dla całej firmy</h2>
         <p class="valid status">Liczba pracowników z ważnymi szkoleniami: {{ valid_training }} ({{ valid_percentage }}%)</p>
@@ -244,70 +219,73 @@
         <p class="expired status">Liczba pracowników z przeterminowanymi szkoleniami: {{ expired }} ({{ expired_percentage }}%)</p>
     </div>
 
+    <!-- Kadra zarządzająca -->
     <div class="report-section">
         <h2>Kadra zarządzająca</h2>
-        <p class="employee-count">Liczba pracowników w grupie: {{ kadra_zarzadcza_count }}</p>
+        <p class="employee-count">Liczba pracowników w grupie: {{ kadra_zarzadcza_count }}</p> <!-- Pogrubiony tekst -->
         <table>
             <tr>
                 <th class="align-left">Status</th>
                 <th class="align-center">Liczba pracowników</th>
             </tr>
             <tr>
-                <td class="align-left valid-desc">Ważne szkolenia</td>
+                <td class="align-left valid-desc">Ważne szkolenia</td> <!-- Tekst odsunięty od lewej -->
                 <td class="align-center value-cell">{{ kadra_zarzadcza_summary.valid }} ({{ kadra_zarzadcza_summary.valid_percentage }}%)</td>
             </tr>
             <tr>
-                <td class="align-left soon-expiring-desc">Szkolenia wygasające</td>
+                <td class="align-left soon-expiring-desc">Szkolenia wygasające</td> <!-- Tekst odsunięty od lewej -->
                 <td class="align-center value-cell">{{ kadra_zarzadcza_summary.soon_expiring }} ({{ kadra_zarzadcza_summary.soon_expiring_percentage }}%)</td>
             </tr>
             <tr>
-                <td class="align-left expired-desc">Przeterminowane szkolenia</td>
+                <td class="align-left expired-desc">Przeterminowane szkolenia</td> <!-- Tekst odsunięty od lewej -->
                 <td class="align-center value-cell">{{ kadra_zarzadcza_summary.expired }} ({{ kadra_zarzadcza_summary.expired_percentage }}%)</td>
             </tr>
         </table>
     </div>
 
+    <!-- Kadra kierownicza -->
     <div class="report-section">
         <h2>Kadra kierownicza</h2>
-        <p class="employee-count">Liczba pracowników w grupie: {{ kadra_kierownicza_count }}</p>
+        <p class="employee-count">Liczba pracowników w grupie: {{ kadra_kierownicza_count }}</p> <!-- Pogrubiony tekst -->
         <table>
             <tr>
                 <th class="align-left">Status</th>
                 <th class="align-center">Liczba pracowników</th>
             </tr>
             <tr>
-                <td class="align-left valid-desc">Ważne szkolenia</td>
+                <td class="align-left valid-desc">Ważne szkolenia</td> <!-- Tekst odsunięty od lewej -->
                 <td class="align-center value-cell">{{ kadra_kierownicza_summary.valid }} ({{ kadra_kierownicza_summary.valid_percentage }}%)</td>
             </tr>
             <tr>
-                <td class="align-left soon-expiring-desc">Szkolenia wygasające</td>
+                <td class="align-left soon-expiring-desc">Szkolenia wygasające</td> <!-- Tekst odsunięty od lewej -->
                 <td class="align-center value-cell">{{ kadra_kierownicza_summary.soon_expiring }} ({{ kadra_kierownicza_summary.soon_expiring_percentage }}%)</td>
             </tr>
             <tr>
-                <td class="align-left expired-desc">Przeterminowane szkolenia</td>
+                <td class="align-left expired-desc">Przeterminowane szkolenia</td> <!-- Tekst odsunięty od lewej -->
                 <td class="align-center value-cell">{{ kadra_kierownicza_summary.expired }} ({{ kadra_kierownicza_summary.expired_percentage }}%)</td>
             </tr>
         </table>
     </div>
 
+    <!-- Pracownicy -->
     <div class="report-section">
         <h2>Pracownicy</h2>
-        <p class="employee-count">Liczba pracowników w grupie: {{ pracownicy_count }}</p>
+        <p class="employee-count">Liczba pracowników w grupie: {{ pracownicy_count }}</p> <!-- Pogrubiony tekst -->
         <table>
             <tr>
                 <th class="align-left">Status</th>
                 <th class="align-center">Liczba pracowników</th>
             </tr>
             <tr>
-                <td class="align-left valid-desc">Ważne szkolenia</td>
+                <td class="align-left valid-desc">Ważne szkolenia</td> <!-- Tekst odsunięty od lewej -->
                 <td class="align-center value-cell">{{ pracownicy_summary.valid }} ({{ pracownicy_summary.valid_percentage }}%)</td>
             </tr>
             <tr>
-                <td class="align-left soon-expiring-desc">Szkolenia wygasające</td>
+                <td class="align-left soon-expiring-desc">Szkolenia wygasające</td> <!-- Tekst odsunięty od lewej -->
                 <td class="align-center value-cell">{{ pracownicy_summary.soon_expiring }} ({{ pracownicy_summary.soon_expiring_percentage }}%)</td>
             </tr>
             <tr>
-                <td class="align-left expired-desc">Przeterminowane szkolenia</td>
+                <td class="align-left expired-desc">Przeterminowane szkolenia</td> <!-- Tekst odsunięty od lewej -->
                 <td class="align-center value-cell">{{ pracownicy_summary.expired }} ({{ pracownicy_summary.expired_percentage }}%)</td>
             </tr>
         </table>
